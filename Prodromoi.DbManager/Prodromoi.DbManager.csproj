@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="SQL\01_structure\20230307_audit.sql">
+      <None Update="SQL\01_structure\20230308_audit.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

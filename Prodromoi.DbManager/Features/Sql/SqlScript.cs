@@ -4,8 +4,7 @@ public class SqlScript
 {
     private string Path { get; init; }
     public string Filename { get; init; }
-
-    public string Content => GetScriptContent();
+    
     
     public bool HasBeenRun { get; set; }
 
@@ -15,7 +14,7 @@ public class SqlScript
         Filename = filename;
     }
 
-    private string GetScriptContent()
+    public string GetScriptContent()
     {
         return File.ReadAllText($"./{Path}/{Filename}");
     }

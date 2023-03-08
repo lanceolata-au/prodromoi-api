@@ -71,7 +71,9 @@ public class SqlFunctions
             var begin = new NpgsqlCommand("begin;", GetConnection());
             begin.ExecuteNonQuery();
 
-            var scriptContent = script.Content;
+            var scriptContent = script.GetScriptContent();
+            
+            Log.Verbose("Running script with content: \n\n {scriptContent}", scriptContent);
             
             var scriptFunction = new NpgsqlCommand(scriptContent, GetConnection());
             scriptFunction.ExecuteNonQuery();
@@ -88,7 +90,7 @@ public class SqlFunctions
         }
         catch (Exception e)
         {
-            //Log.Error(e.StackTrace);
+            Log.Error("{StackTrace}",e.StackTrace);
             
             var rollback = new NpgsqlCommand("rollback;", GetConnection());
             rollback.ExecuteNonQuery();
