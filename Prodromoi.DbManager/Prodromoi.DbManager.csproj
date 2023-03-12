@@ -19,6 +19,9 @@
       <None Update="SQL\01_structure\20230308_audit.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SQL\01_structure\20230311_events.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

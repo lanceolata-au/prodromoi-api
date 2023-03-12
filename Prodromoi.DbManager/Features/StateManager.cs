@@ -76,7 +76,11 @@ public class StateManager
         foreach (var script in scripts)
         {
             _functions.CheckIfScriptRun(script);
-            _functions.RunScript(script);
+            if (!_functions.RunScript(script))
+            {
+                Log.Fatal("!!! Exiting NOW !!! Failed to run {script} !!! Exiting NOW !!!", script.Filename);
+                return;
+            }
         }
         
     }

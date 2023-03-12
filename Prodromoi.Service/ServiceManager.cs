@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Prodromoi.Core.Features;
+using Prodromoi.Core.Interfaces;
+using Prodromoi.Service.Features.Data;
+using Prodromoi.Service.Services;
 
 namespace Prodromoi.Service;
 
@@ -10,11 +14,17 @@ public static class ServiceManager
     public static void Configure(HostBuilderContext context, IServiceCollection services)
     {
         services.ConfigureDependencies();
+
+        services.AddHostedService<DummyService>();
     }
 
 
     private static void ConfigureDependencies(this IServiceCollection services)
     {
+
+        services.AddMediatR(cfg
+            => cfg.RegisterServicesFromAssemblyContaining<Program>());
+        
         var optionsBuilder = new DbContextOptionsBuilder();
         optionsBuilder.UseNpgsql(GenerateConnectionString());
         optionsBuilder.UseSnakeCaseNamingConvention();
@@ -22,11 +32,16 @@ public static class ServiceManager
         {
             ExpirationScanFrequency = TimeSpan.FromMilliseconds(100)
         };
-        
         var cache = new MemoryCache(options);
-        
         optionsBuilder.UseMemoryCache(cache);
-        services.AddSingleton<DbContextOptions>(optionsBuilder.Options);
+        
+        services.AddSingleton(optionsBuilder.Options);
+        services.AddTransient<DbContext, CoreContext>();
+
+        services.AddTransient<IReadOnlyRepository, ReadOnlyRepository>();
+        services.AddTransient<IReadWriteRepository, ReadWriteRepository>();
+        services.AddTransient<IAuditRepository, AuditedRepository>();
+
     }
     
     private static string GenerateConnectionString()

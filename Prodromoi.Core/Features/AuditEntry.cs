@@ -1,12 +1,13 @@
-using Prodromoi.Core.Features;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Prodromoi.DomainModel.Audit;
+namespace Prodromoi.Core.Features;
 
 public class AuditEntry : Entity<long>
 {
     public DateTime Timestamp { get; private set; } = DateTime.UnixEpoch;
     public string SourceType { get; private set; } = string.Empty;
-    public long? SourceId { get; private set; }
+    public int? SourceId { get; private set; }
+    
     public string Actor { get; private set; } = string.Empty;
     public string Entry { get; private set; } = string.Empty;
 
@@ -16,15 +17,15 @@ public class AuditEntry : Entity<long>
         string sourceType,
         string actor,
         string entry,
-        long? sourceId = null)
+        int? sourceId = null)
     {
         var obj = new AuditEntry
         {
             Timestamp = DateTime.Now,
             SourceType = sourceType,
             SourceId = sourceId,
-            Entry = entry,
-            Actor = actor
+            Actor = actor,
+            Entry = entry
         };
 
         return obj;

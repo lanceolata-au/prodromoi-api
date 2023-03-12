@@ -1,3 +1,4 @@
+using System.Transactions;
 using Npgsql;
 using Serilog;
 
@@ -60,50 +61,53 @@ public class SqlFunctions
 
     }
 
-    public void RunScript(SqlScript script)
+    public bool RunScript(SqlScript script)
     {
-        if (script.HasBeenRun) return;
+        if (script.HasBeenRun) return true;
 
         GetConnection().Open();
 
+        var begin = new NpgsqlCommand("begin;", GetConnection());
+        begin.ExecuteNonQuery();
+
+        var scriptContent = script.GetScriptContent();
+            
+        Log.Verbose("Running script with content: \n\n {scriptContent}", scriptContent);
+            
+        var scriptFunction = new NpgsqlCommand(scriptContent, GetConnection());
         try
         {
-            var begin = new NpgsqlCommand("begin;", GetConnection());
-            begin.ExecuteNonQuery();
-
-            var scriptContent = script.GetScriptContent();
-            
-            Log.Verbose("Running script with content: \n\n {scriptContent}", scriptContent);
-            
-            var scriptFunction = new NpgsqlCommand(scriptContent, GetConnection());
             scriptFunction.ExecuteNonQuery();
             
             var commit = new NpgsqlCommand("commit;", GetConnection());
             commit.ExecuteNonQuery();
-            
+
             var recordCommandString = $"insert into schema_versions values ('{script.Filename}',now())";
             var recordCommand = new NpgsqlCommand(recordCommandString, GetConnection());
             recordCommand.ExecuteNonQuery();
-            
+
             Log.Information("🟩 Applied to Schema -- {Filename} -- ", script.Filename);
-            
+            script.HasBeenRun = true;
         }
         catch (Exception e)
         {
-            Log.Error("{StackTrace}",e.StackTrace);
+            Log.Error("Failed to run script with following: ");
+            
+            if (e is PostgresException) Log.Error("{SQLError}", e.Message);
+            else Log.Error("{stackTrace}", e.StackTrace);
             
             var rollback = new NpgsqlCommand("rollback;", GetConnection());
+            Log.Warning("Rollback triggered");
             rollback.ExecuteNonQuery();
-            
-            
             Log.Information("🟥 Failed Script     -- {Filename} -- ", script.Filename);
         }
-        
-        GetConnection().Close();
-        
-        script.HasBeenRun = true;
-        
-        
+        finally
+        {
+            GetConnection().Close();
+        }
+
+        return script.HasBeenRun;
+
     }
     
     private NpgsqlConnection GetConnection(bool usedScoped = true)
