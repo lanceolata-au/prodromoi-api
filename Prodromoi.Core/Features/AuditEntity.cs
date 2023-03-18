@@ -12,9 +12,6 @@ public class AuditEntity<TId> : IEntity<TId> where TId: struct
     
     public virtual List<AuditEntry> AuditEntries { get; internal set; } = new();
 
-    [NotMapped] 
-    public List<AuditDto> UpdateAuditEntries { get; private set; } = new();
-    
     protected AuditEntity(){}
         
     protected AuditEntity(TId id)
@@ -58,14 +55,12 @@ public class AuditEntity<TId> : IEntity<TId> where TId: struct
         
         if (Id is int) sourceId = Id as int?;
 
-        UpdateAuditEntries.Add(new AuditDto()
-        {
-            Timestamp = DateTime.UtcNow,
-            Actor = actor,
-            Entry = entry,
-            SourceId = sourceId,
-            SourceType = GetType().ToString()
-        });
+        AuditEntries.Add(
+            AuditEntry.Create(
+                GetType().ToString(),
+                actor,
+                entry, 
+                sourceId));
 
     }
     

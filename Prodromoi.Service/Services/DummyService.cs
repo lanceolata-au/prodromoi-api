@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using Prodromoi.Core.Interfaces;
-using Prodromoi.DomainModel.Model.Events;
+using Prodromoi.DomainModel.Model;
+using Prodromoi.Service.Extensions;
 
 namespace Prodromoi.Service.Services;
 
@@ -14,13 +15,18 @@ public class DummyService : IHostedService
         _auditedRepository = auditedRepository;
     }
     
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var someEvent = Event.Create("test", new DateOnly(2022, 12, 12));
-        _auditedRepository.Create<Event, int>(someEvent);
-        Task.Delay(200, cancellationToken);
+        var test = Actor.Create("test");
+        
+        _auditedRepository.Create<Actor, int>(test);
+
         _auditedRepository.Commit();
-        return Task.CompletedTask;
+        
+        var actors = 
+            _auditedRepository
+            .Table<Actor, int>()
+            .ToList();
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

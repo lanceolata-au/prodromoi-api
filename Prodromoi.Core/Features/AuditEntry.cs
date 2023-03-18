@@ -16,19 +16,25 @@ public class AuditEntry : Entity<long>
     public static AuditEntry Create(
         string sourceType,
         string actor,
-        string entry,
+        string entry, 
         int? sourceId = null)
     {
         var obj = new AuditEntry
         {
-            Timestamp = DateTime.Now,
+            Timestamp = DateTime.Now.ToUniversalTime(),
             SourceType = sourceType,
-            SourceId = sourceId,
             Actor = actor,
-            Entry = entry
+            Entry = entry,
+            SourceId = sourceId
         };
 
         return obj;
+    }
+
+    public void SetSourceId(int sourceId)
+    {
+        if (SourceId != null) return;
+        SourceId = sourceId;
     }
     
 }

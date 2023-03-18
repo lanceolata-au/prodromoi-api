@@ -24,7 +24,7 @@ namespace Prodromoi.Core.Features
             }
             catch (Exception e)
             {
-                if (e.StackTrace != null) Log.Error(e.StackTrace!);
+                e.LogException();
             }
         }
 
@@ -88,27 +88,23 @@ namespace Prodromoi.Core.Features
         public void Create<T, TId>(T entity) where T : AuditEntity<TId> where TId : struct
         {
             _context.Set<T>().Add(entity);
-            AddAuditEntries(entity.UpdateAuditEntries);
+            AddAuditEntries(entity.AuditEntries);
         }
 
         public void Update<T, TId>(T entity) where T : AuditEntity<TId> where TId : struct
         {
             _context.Set<T>().Attach(entity);
-            AddAuditEntries(entity.UpdateAuditEntries);
+            AddAuditEntries(entity.AuditEntries);
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        private void AddAuditEntries(List<AuditDto> updateEntries)
+        private void AddAuditEntries(List<AuditEntry> updateEntries)
         {
-            foreach (var entityUpdateEntry in updateEntries)
+            foreach (var entry in updateEntries)
             {
                 _context
                     .Set<AuditEntry>()
-                    .Add(AuditEntry.Create(
-                        sourceType: entityUpdateEntry.SourceType,
-                        actor: entityUpdateEntry.Actor,
-                        entry: entityUpdateEntry.Entry,
-                        sourceId: entityUpdateEntry.SourceId));
+                    .Add(entry);
             }
         }
 
@@ -140,7 +136,7 @@ namespace Prodromoi.Core.Features
             }
             catch (Exception e)
             {
-                Log.Error(e.StackTrace!);
+                e.LogException();
             }
         }
     }

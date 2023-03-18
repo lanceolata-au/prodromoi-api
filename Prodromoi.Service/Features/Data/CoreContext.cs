@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Prodromoi.Core.Features;
-using Prodromoi.DomainModel.Model.Events;
+using Prodromoi.DomainModel.Model;
 
 namespace Prodromoi.Service.Features.Data;
 
@@ -12,15 +12,15 @@ public class CoreContext : ProdromoiBaseDbContext
         
     }
     
-    public DbSet<Event> Events { get; set; }
+    public DbSet<AuditEntry> AuditEntries { get; set; }
+
+    public DbSet<Actor> Actors { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Event>()
-            .HasMany(evnt => evnt.AuditEntries)
-            .WithOne()
-            .HasForeignKey("SourceId")
-            .HasForeignKey(ent => ent.SourceId);
+        modelBuilder
+            .Entity<Actor>()
+            .AddAuditRelationship<Actor, int>();
 
         base.OnModelCreating(modelBuilder);
     }

@@ -8,7 +8,5 @@ public class ProdromoiBaseDbContext : DbContext
     {
         
     }
-    
-    private DbSet<AuditEntry> AuditEntries { get; set; }
 
 }

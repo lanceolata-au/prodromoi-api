@@ -19,8 +19,4 @@
       <ProjectReference Include="..\Prodromoi.DomainModel\Prodromoi.DomainModel.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Extensions\Mappings" />
-    </ItemGroup>
-
 </Project>

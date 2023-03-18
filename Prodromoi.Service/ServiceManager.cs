@@ -2,10 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Prodromoi.Core.Features;
 using Prodromoi.Core.Interfaces;
 using Prodromoi.Service.Features.Data;
 using Prodromoi.Service.Services;
+using Serilog;
 
 namespace Prodromoi.Service;
 
@@ -27,7 +29,10 @@ public static class ServiceManager
         
         var optionsBuilder = new DbContextOptionsBuilder();
         optionsBuilder.UseNpgsql(GenerateConnectionString());
+        optionsBuilder.UseLoggerFactory(new LoggerFactory().AddSerilog());
         optionsBuilder.UseSnakeCaseNamingConvention();
+        //optionsBuilder.EnableDetailedErrors();
+        optionsBuilder.EnableSensitiveDataLogging();
         var options = new MemoryCacheOptions
         {
             ExpirationScanFrequency = TimeSpan.FromMilliseconds(100)
