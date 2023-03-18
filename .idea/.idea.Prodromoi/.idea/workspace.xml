@@ -6,22 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8306c552-6e7f-46a2-9e63-5daa0bd6d285" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Prodromoi/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Prodromoi/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditedRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditedRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Core/Features/ProdromoiBaseDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Core/Features/ProdromoiBaseDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/Prodromoi.DbManager.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/Prodromoi.DbManager.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230308_audit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230308_audit.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230311_events.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Events/Event.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/Extensions/EventMappings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/Features/Data/CoreContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Service/Features/Data/CoreContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/Features/Logging.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Service/Features/Logging.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/Prodromoi.Service.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Service/Prodromoi.Service.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/ServiceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Service/ServiceManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/Services/DummyService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Service/Services/DummyService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/Features/Sql/SqlFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/Features/Sql/SqlFunctions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/Features/StateManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/Features/StateManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +43,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Project.Prodromoi.Service">
+  <component name="RunManager" selected=".NET Project.Prodromoi.DbManager">
     <configuration name="Prodromoi.DbManager" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/Prodromoi.DbManager/bin/Debug/net7.0/Prodromoi.DbManager" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -125,7 +111,7 @@
       <updated>1678182270928</updated>
       <workItem from="1678182272308" duration="708000" />
       <workItem from="1679098536856" duration="4233000" />
-      <workItem from="1679114420975" duration="1888000" />
+      <workItem from="1679114420975" duration="2233000" />
     </task>
     <servers />
   </component>
@@ -152,13 +138,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Prodromoi.Service/Services/DummyService.cs</url>
-          <line>30</line>
+          <line>29</line>
           <properties documentPath="$PROJECT_DIR$/Prodromoi.Service/Services/DummyService.cs" initialLine="28" containingFunctionPresentation="method 'StartAsync'">
             <startOffsets>
-              <option value="792" />
+              <option value="749" />
             </startOffsets>
             <endOffsets>
-              <option value="793" />
+              <option value="750" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />

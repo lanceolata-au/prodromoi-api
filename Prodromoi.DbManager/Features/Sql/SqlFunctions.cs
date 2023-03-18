@@ -51,7 +51,7 @@ public class SqlFunctions
 
     public void CheckIfScriptRun(SqlScript script)
     {
-        var query = $"select exists ( select from schema_versions where name = '{script.Filename}' )";
+        var query = $"select exists ( select from __schema_versions where name = '{script.Filename}' )";
         
         Log.Information("🟦 Checking SQL File -- {Filename} -- ", script.Filename);
         
@@ -82,7 +82,7 @@ public class SqlFunctions
             var commit = new NpgsqlCommand("commit;", GetConnection());
             commit.ExecuteNonQuery();
 
-            var recordCommandString = $"insert into schema_versions values ('{script.Filename}',now())";
+            var recordCommandString = $"insert into __schema_versions values ('{script.Filename}',now())";
             var recordCommand = new NpgsqlCommand(recordCommandString, GetConnection());
             recordCommand.ExecuteNonQuery();
 

@@ -30,26 +30,33 @@ public class StateManager
 
         if (hasDatabase && !_resetDatabase)
         {
-            Log.Information("Database {DB_DATABASE} exists, ready to run schema update", Environment.GetEnvironmentVariable("DB_DATABASE"));
+            Log.Information("Database {DB_DATABASE} exists, ready to run schema update", 
+                Environment.GetEnvironmentVariable("DB_DATABASE"));
             return;
         }
 
         if (hasDatabase && _resetDatabase)
         {
-            Log.Information("Found database {DB_DATABASE} and reset requested", Environment.GetEnvironmentVariable("DB_DATABASE"));
+            Log.Information("Found database {DB_DATABASE} and reset requested", 
+                Environment.GetEnvironmentVariable("DB_DATABASE"));
             Log.Warning("💣💣 Database reset has been requested, will destroy everything 💣💣");
-            _functions.RunNonQuery($"drop database {Environment.GetEnvironmentVariable("DB_DATABASE")} with (FORCE);",false);
+            _functions
+                .RunNonQuery($"drop database {Environment.GetEnvironmentVariable("DB_DATABASE")} with (FORCE);",
+                    false);
             hasDatabase = false;
         }
 
         if (!hasDatabase)
         {
-            Log.Information("✨ ✨  New {DB_DATABASE} database will be created  ✨ ✨  ", Environment.GetEnvironmentVariable("DB_DATABASE"));
+            Log.Information("✨ ✨  New {DB_DATABASE} database will be created  ✨ ✨  ", 
+                Environment.GetEnvironmentVariable("DB_DATABASE"));
             _functions
-                .RunNonQuery($"create database {Environment.GetEnvironmentVariable("DB_DATABASE")};",false);
+                .RunNonQuery(
+                    $"create database {Environment.GetEnvironmentVariable("DB_DATABASE")};",
+                    false);
             _functions
                 .RunNonQuery("create table " +
-                             "schema_versions(" +
+                             "__schema_versions(" +
                              "name varchar(128) not null," +
                              "executed timestamp with time zone default current_timestamp)");
         }
@@ -78,7 +85,9 @@ public class StateManager
             _functions.CheckIfScriptRun(script);
             if (!_functions.RunScript(script))
             {
-                Log.Fatal("!!! Exiting NOW !!! Failed to run {script} !!! Exiting NOW !!!", script.Filename);
+                Log.Fatal(
+                    "!!! Exiting NOW !!! Failed to run {script} !!! Exiting NOW !!!", 
+                    script.Filename);
                 return;
             }
         }
