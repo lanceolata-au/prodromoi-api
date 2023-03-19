@@ -8,7 +8,7 @@ create table members (
     email varchar null
 );
 
-create table section_attendances (
+create table section_recorded_attendances (
     id serial8 primary key,
     recording_adult_id int not null references members(id),
     recorded timestamp with time zone not null
@@ -16,6 +16,6 @@ create table section_attendances (
 
 create table recorded_attendances (
     id serial8 primary key,
-    section_attendance_id int not null references section_attendances(id),
+    section_attendance_id int not null references section_recorded_attendances(id),
     member_id int not null references members(id)
 );

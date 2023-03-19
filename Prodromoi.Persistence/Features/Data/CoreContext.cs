@@ -2,17 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Prodromoi.Core.Features;
 using Prodromoi.DomainModel.Model;
+using Prodromoi.DomainModel.Model.Attendance;
+using Prodromoi.DomainModel.Model.Members;
 
 namespace Prodromoi.Persistence.Features.Data;
 
 public class CoreContext : ProdromoiBaseDbContext
 {
-
-    public DbSet<AuditEntry> AuditEntries { get; set; }
-    public DbSet<Actor> Actors { get; set; }
-
-    
-    
+        
     public CoreContext(DbContextOptions options) : base(options)
     {
         // ReSharper disable once VirtualMemberCallInConstructor
@@ -24,9 +21,31 @@ public class CoreContext : ProdromoiBaseDbContext
         modelBuilder
             .Entity<Actor>()
             .AddAuditRelationship();
-
+        
+        BuildAttendanceModel(modelBuilder);
+        
         base.OnModelCreating(modelBuilder);
     }
+
+    public DbSet<AuditEntry> AuditEntries { get; set; }
+    public DbSet<Actor> Actors { get; set; }
+
+    #region attendance
+
+    public DbSet<Member> Members { get; set; }
+    public DbSet<RecordedAttendance> RecordedAttendances { get; set; }
+    public DbSet<SectionRecordedAttendance> SectionRecordedAttendances { get; set; }
+
+    private static void BuildAttendanceModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<RecordedAttendance>()
+            .HasOne<Member>(ra => ra.Member)
+            .WithOne()
+            .HasForeignKey<RecordedAttendance>(ra => ra.MemberId);
+    }
+    
+    #endregion
 
     #region audit_entry_management
 
