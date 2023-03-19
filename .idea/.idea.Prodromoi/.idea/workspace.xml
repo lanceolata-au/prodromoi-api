@@ -8,26 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8306c552-6e7f-46a2-9e63-5daa0bd6d285" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230320_attendance.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Attendance/RecordedAttendance.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Attendance/SectionAttendance.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Formations/Formation.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Formations/FormationMembership.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Formations/FormationRoles.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Formations/FormationSection.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Members/Member.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Members/MemberType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Prodromoi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Prodromoi/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Api/Prodromoi.Api.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Api/Prodromoi.Api.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Core/Features/AuditEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/Prodromoi.DbManager.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/Prodromoi.DbManager.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230308_audit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230308_audit.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230318_actor.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230318_actor.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Actor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Actor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Persistence/Extensions/AuditMappings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Persistence/Extensions/AuditMappings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Persistence/Features/Data/ContextMappings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Persistence/Features/Data/ContextMappings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Persistence/Features/Data/CoreContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Persistence/Features/Data/CoreContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Prodromoi.Service/Services/DummyService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.Service/Services/DummyService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230320_attendance.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DbManager/SQL/01_structure/20230320_attendance.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Members/Member.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Prodromoi.DomainModel/Model/Members/Member.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +152,7 @@
       <workItem from="1679098536856" duration="4233000" />
       <workItem from="1679114420975" duration="7543000" />
       <workItem from="1679203263178" duration="7302000" />
-      <workItem from="1679224356494" duration="5823000" />
+      <workItem from="1679224356494" duration="6279000" />
     </task>
     <servers />
   </component>
