@@ -13,7 +13,6 @@ public class CoreContext : ProdromoiBaseDbContext
 
     
     
-    
     public CoreContext(DbContextOptions options) : base(options)
     {
         // ReSharper disable once VirtualMemberCallInConstructor
@@ -24,7 +23,7 @@ public class CoreContext : ProdromoiBaseDbContext
     {
         modelBuilder
             .Entity<Actor>()
-            .AddAuditRelationship<Actor, int>();
+            .AddAuditRelationship();
 
         base.OnModelCreating(modelBuilder);
     }
@@ -50,12 +49,12 @@ public class CoreContext : ProdromoiBaseDbContext
 
         if(!IsAuditEntity(mappedType.Entry.Entity.GetType())) return;
 
-        foreach (var audit in ((AuditEntity<int>)mappedType.Entry.Entity).PendingAuditEntires.Select(entry 
+        foreach (var audit in ((AuditEntity)mappedType.Entry.Entity).PendingAuditEntires.Select(entry 
                      => AuditEntry.Create(
                      entry.Actor,
                      entry.Entry,
                      mappedType.Entry.Entity.GetType().ToString(),
-                     ((AuditEntity<int>) mappedType.Entry.Entity).Id)))
+                     ((AuditEntity) mappedType.Entry.Entity).Id)))
         {
             Set<AuditEntry>().Add(audit);
             Entry(audit).State = EntityState.Added;
@@ -65,8 +64,8 @@ public class CoreContext : ProdromoiBaseDbContext
     
     public bool IsAuditEntity(Type entityType)
     {
-        return entityType.IsSubclassOf(typeof(AuditEntity<int>))
-               || entityType == typeof(AuditEntity<int>);
+        return entityType.IsSubclassOf(typeof(AuditEntity))
+               || entityType == typeof(AuditEntity);
     }
 
     #endregion

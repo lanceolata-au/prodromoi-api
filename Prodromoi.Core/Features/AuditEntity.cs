@@ -5,7 +5,7 @@ using Prodromoi.Core.Interfaces;
 
 namespace Prodromoi.Core.Features;
 
-public class AuditEntity<TId> : Entity<TId> where TId: struct
+public class AuditEntity : Entity<int>
 {
     public virtual List<AuditEntry> AuditEntries { get; private set; } = new();
 
@@ -14,9 +14,9 @@ public class AuditEntity<TId> : Entity<TId> where TId: struct
 
     protected AuditEntity(){}
         
-    protected AuditEntity(TId id)
+    protected AuditEntity(int id)
     {
-        if (Equals(id,default(TId)))
+        if (Equals(id,default(int)))
         {
             throw new ArgumentException("The identifier cannot be default.", paramName: nameof(id));
         }
@@ -27,7 +27,7 @@ public class AuditEntity<TId> : Entity<TId> where TId: struct
 
     public override bool Equals(object? otherObject)
     {
-        if (otherObject is Entity<TId> entity && !Equals(Id, default(TId)))
+        if (otherObject is Entity<int> entity && !Equals(Id, default(int)))
         {
             return Equals(entity);
         }
@@ -40,7 +40,7 @@ public class AuditEntity<TId> : Entity<TId> where TId: struct
         return Id.GetHashCode();
     }
 
-    private bool Equals(Entity<TId>? other)
+    private bool Equals(Entity<int>? other)
     {
         return other != null && Id.Equals(other.Id);
     }

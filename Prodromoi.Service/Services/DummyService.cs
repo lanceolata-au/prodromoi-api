@@ -19,7 +19,7 @@ public class DummyService : IHostedService
         _readWriteRepository = readWriteRepository;
     }
     
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken)
     {
         _testDataCreator.CreateTestUser();
         _testDataCreator.CreateTestUser();
@@ -33,6 +33,8 @@ public class DummyService : IHostedService
             .Table<Actor, int>()
             .Include(a => a.AuditEntries)
             .ToList();
+
+        return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

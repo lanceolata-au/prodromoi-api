@@ -5,7 +5,7 @@ namespace Prodromoi.Persistence.Extensions;
 
 public static class AuditMappings
 {
-    public static IQueryable<T> AuditIncludes<T, TId>(this IQueryable<T> audit) where T : AuditEntity<TId> where TId : struct
+    public static IQueryable<T> AuditIncludes<T>(this IQueryable<T> audit) where T : AuditEntity
     {
         return audit
             .Include(ae => ae.AuditEntries);

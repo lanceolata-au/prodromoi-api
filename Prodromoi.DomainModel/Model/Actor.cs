@@ -2,7 +2,7 @@ using Prodromoi.Core.Features;
 
 namespace Prodromoi.DomainModel.Model;
 
-public class Actor : AuditEntity<int>
+public class Actor : AuditEntity
 {
     
     public string Name { get; private set; } = string.Empty;

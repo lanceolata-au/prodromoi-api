@@ -5,9 +5,8 @@ namespace Prodromoi.Persistence.Features.Data;
 
 public static class ContextMappings
 {
-    public static void AddAuditRelationship<T, TId>(this EntityTypeBuilder<T> entity) 
-        where T : AuditEntity<TId> 
-        where TId : struct
+    public static void AddAuditRelationship<T>(this EntityTypeBuilder<T> entity) 
+        where T : AuditEntity
     {
         entity
             .HasMany(act => act.AuditEntries)
