@@ -1,31 +1,37 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Prodromoi.Core.Interfaces;
 using Prodromoi.DomainModel.Model;
-using Prodromoi.Service.Extensions;
+using Prodromoi.Persistence.Features.Functions;
 
 namespace Prodromoi.Service.Services;
 
 public class DummyService : IHostedService
 {
 
-    private readonly IAuditRepository _auditedRepository;
+    private readonly IReadWriteRepository _readWriteRepository;
+    private readonly TestDataCreator _testDataCreator;
 
-    public DummyService(IAuditRepository auditedRepository)
+    public DummyService( 
+        TestDataCreator testDataCreator, IReadWriteRepository readWriteRepository)
     {
-        _auditedRepository = auditedRepository;
+        _testDataCreator = testDataCreator;
+        _readWriteRepository = readWriteRepository;
     }
     
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var test = Actor.Create("test");
-        
-        _auditedRepository.Create<Actor, int>(test);
+        _testDataCreator.CreateTestUser();
+        _testDataCreator.CreateTestUser();
+        _testDataCreator.CreateTestUser();
+        _testDataCreator.UpdateTestUsers();
 
-        _auditedRepository.Commit();
+        _readWriteRepository.Commit();
         
         var actors = 
-            _auditedRepository
+            _readWriteRepository
             .Table<Actor, int>()
+            .Include(a => a.AuditEntries)
             .ToList();
     }
 

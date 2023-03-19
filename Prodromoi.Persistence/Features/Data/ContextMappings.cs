@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Prodromoi.Core.Features;
-using Prodromoi.Service.Extensions;
 
-namespace Prodromoi.Service.Features.Data;
+namespace Prodromoi.Persistence.Features.Data;
 
 public static class ContextMappings
 {

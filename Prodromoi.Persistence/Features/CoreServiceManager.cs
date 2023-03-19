@@ -5,28 +5,23 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prodromoi.Core.Features;
 using Prodromoi.Core.Interfaces;
-using Prodromoi.Service.Features.Data;
-using Prodromoi.Service.Services;
+using Prodromoi.Persistence.Features.Data;
+using Prodromoi.Persistence.Features.Functions;
 using Serilog;
 
-namespace Prodromoi.Service;
+namespace Prodromoi.Persistence.Features;
 
-public static class ServiceManager
+public static class CoreServiceManager
 {
     public static void Configure(HostBuilderContext context, IServiceCollection services)
     {
         services.ConfigureDependencies();
-
-        services.AddHostedService<DummyService>();
     }
 
 
     private static void ConfigureDependencies(this IServiceCollection services)
     {
 
-        services.AddMediatR(cfg
-            => cfg.RegisterServicesFromAssemblyContaining<Program>());
-        
         var optionsBuilder = new DbContextOptionsBuilder();
         optionsBuilder.UseNpgsql(GenerateConnectionString());
         optionsBuilder.UseLoggerFactory(new LoggerFactory().AddSerilog());
@@ -45,7 +40,8 @@ public static class ServiceManager
 
         services.AddTransient<IReadOnlyRepository, ReadOnlyRepository>();
         services.AddTransient<IReadWriteRepository, ReadWriteRepository>();
-        services.AddTransient<IAuditRepository, AuditedRepository>();
+
+        services.AddTransient<TestDataCreator>();
 
     }
     

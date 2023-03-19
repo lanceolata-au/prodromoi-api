@@ -6,7 +6,7 @@ public class AuditEntry : Entity<long>
 {
     public DateTime Timestamp { get; private set; } = DateTime.UnixEpoch;
     public string SourceType { get; private set; } = string.Empty;
-    public int? SourceId { get; private set; }
+    public int SourceId { get; private set; } = 0;
     
     public string Actor { get; private set; } = string.Empty;
     public string Entry { get; private set; } = string.Empty;
@@ -14,10 +14,10 @@ public class AuditEntry : Entity<long>
     private AuditEntry(){}
 
     public static AuditEntry Create(
-        string sourceType,
         string actor,
         string entry, 
-        int? sourceId = null)
+        string sourceType,
+        int sourceId)
     {
         var obj = new AuditEntry
         {
@@ -31,10 +31,4 @@ public class AuditEntry : Entity<long>
         return obj;
     }
 
-    public void SetSourceId(int sourceId)
-    {
-        if (SourceId != null) return;
-        SourceId = sourceId;
-    }
-    
 }

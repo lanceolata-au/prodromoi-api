@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Prodromoi.Core.Features;
 
-namespace Prodromoi.Service.Extensions;
+namespace Prodromoi.Persistence.Extensions;
 
 public static class AuditMappings
 {

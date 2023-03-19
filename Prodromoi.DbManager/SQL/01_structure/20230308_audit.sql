@@ -2,7 +2,7 @@ create table public.audit_entries (
     id serial8 not null,
     "timestamp" timestamp with time zone not null,
     source_type varchar not null,
-    source_id int4 null,
+    source_id int4 not null,
     actor varchar not null,
     entry text not null
 );

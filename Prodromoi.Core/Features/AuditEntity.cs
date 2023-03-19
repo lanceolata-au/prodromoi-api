@@ -5,12 +5,12 @@ using Prodromoi.Core.Interfaces;
 
 namespace Prodromoi.Core.Features;
 
-public class AuditEntity<TId> : IEntity<TId> where TId: struct
+public class AuditEntity<TId> : Entity<TId> where TId: struct
 {
-    [Key]
-    public virtual TId Id { get; protected set; }
-    
-    public virtual List<AuditEntry> AuditEntries { get; internal set; } = new();
+    public virtual List<AuditEntry> AuditEntries { get; private set; } = new();
+
+    [NotMapped] 
+    public List<AuditDto> PendingAuditEntires { get; private set; } = new();
 
     protected AuditEntity(){}
         
@@ -45,23 +45,13 @@ public class AuditEntity<TId> : IEntity<TId> where TId: struct
         return other != null && Id.Equals(other.Id);
     }
 
-    protected void RecordAuditEvent(
-        string actor,
-        string entry)
+    public void Audit(string actor, string entry)
     {
-        var sourceType = GetType().ToString();
-
-        int? sourceId = null;
-        
-        if (Id is int) sourceId = Id as int?;
-
-        AuditEntries.Add(
-            AuditEntry.Create(
-                GetType().ToString(),
-                actor,
-                entry, 
-                sourceId));
-
+        PendingAuditEntires.Add(new AuditDto()
+        {
+            Actor = actor,
+            Entry = entry
+        });
     }
-    
+
 }

@@ -7,14 +7,22 @@ public class Actor : AuditEntity<int>
     
     public string Name { get; private set; } = string.Empty;
 
-    public static Actor Create(string name)
+    public static Actor Create(string name, Actor? actor = null)
     {
-        var obj = new Actor();
+        var obj = new Actor
+        {
+            Name = name
+        };
 
-        obj.RecordAuditEvent("system", $"{name} was created as actor");
+        obj.Audit("System", $"Created new Actor named {name}");
         
-        obj.Name = name;
-
         return obj;
     }
+
+    public void ChangeName(string name, Actor? actor = null)
+    {
+        Audit("System", $"Changed Actor named {Name} to {name}");
+        Name = name;
+    }
+    
 }

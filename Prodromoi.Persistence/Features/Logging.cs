@@ -1,6 +1,6 @@
 using Serilog;
 
-namespace Prodromoi.Service.Features;
+namespace Prodromoi.Persistence.Features;
 
 public static class Logging
 {
