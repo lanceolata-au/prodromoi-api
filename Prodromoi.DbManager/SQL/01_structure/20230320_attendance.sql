@@ -2,7 +2,7 @@ create table members (
     id serial4 primary key,
     name varchar not null,
     registration_number int4 null,
-    date_of_birth date not null,
+    date_of_birth date null,
     member_type int2 not null,
     phone_number varchar null,
     email varchar null

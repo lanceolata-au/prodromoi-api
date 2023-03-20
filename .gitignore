@@ -1,3 +1,4 @@
 **/bin/**
 **/obj/**
 dataSources.xml
+.idea/**

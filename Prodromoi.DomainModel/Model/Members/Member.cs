@@ -1,4 +1,5 @@
 using Prodromoi.Core.Features;
+using Prodromoi.Dto.Members;
 
 namespace Prodromoi.DomainModel.Model.Members;
 
@@ -10,4 +11,24 @@ public class Member : AuditEntity
     public MemberType MemberType { get; private set; } = MemberType.Unknown;
     public string? PhoneNumber { get; private set; }
     public string? Email { get; private set; }
+
+    public static Member Create(MemberDto dto)
+    {
+        var obj = new Member()
+        {
+            Name = dto.Name,
+            RegistrationNumber = dto.RegistrationNumber,
+            DateOfBirth = dto.DateOfBirth,
+            MemberType = dto.MemberType,
+            PhoneNumber = dto.PhoneNumber,
+            Email = dto.Email
+        };
+
+        obj.Audit(
+            "System", 
+            $"Created new member named {dto.Name}, of type {dto.MemberType}");
+        
+        return obj;
+    }
+    
 }

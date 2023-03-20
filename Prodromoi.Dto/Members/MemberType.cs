@@ -1,4 +1,4 @@
-namespace Prodromoi.DomainModel.Model.Members;
+namespace Prodromoi.Dto.Members;
 
 public enum MemberType : short
 {
