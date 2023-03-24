@@ -33,16 +33,16 @@ public class CoreContext : ProdromoiBaseDbContext
     #region attendance
 
     public DbSet<Member> Members { get; set; }
-    public DbSet<RecordedAttendance> RecordedAttendances { get; set; }
-    public DbSet<SectionRecordedAttendance> SectionRecordedAttendances { get; set; }
+    public DbSet<MemberAttendance> RecordedAttendances { get; set; }
+    public DbSet<RecordedAttendance> SectionRecordedAttendances { get; set; }
 
     private static void BuildAttendanceModel(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<RecordedAttendance>()
+            .Entity<MemberAttendance>()
             .HasOne<Member>(ra => ra.Member)
             .WithOne()
-            .HasForeignKey<RecordedAttendance>(ra => ra.MemberId);
+            .HasForeignKey<MemberAttendance>(ra => ra.MemberId);
     }
     
     #endregion
