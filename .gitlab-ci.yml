@@ -1,0 +1,34 @@
+image: docker:20.10.19
+
+stages:
+    - Revise
+    - Package
+    - Staging
+
+Version Up:
+  stage: Revise
+  script:
+    - num=0
+    - num=`expr $VERSION_REVISION + 1`
+    - echo $num
+    - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION"
+    - 'docker run alpine/curl --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+Build Container:
+  stage: Package
+  image: docker:20.10.19
+  before_script:
+    - cd ./
+  script:
+    - docker buildx create --name multiarch --driver docker-container --use
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64,linux/arm/v7 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
+    - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64,linux/arm/v7 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
