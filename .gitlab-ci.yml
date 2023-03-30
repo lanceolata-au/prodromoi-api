@@ -18,7 +18,7 @@ Version Up:
     - /^hotfix.*$/
     - develop
 
-Build Container:
+Build API:
   stage: Package
   image: docker:20.10.19
   before_script:
@@ -27,9 +27,35 @@ Build Container:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
-    - docker buildx build -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
-    - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
     - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+Build DbManager:
+  stage: Package
+  image: docker:20.10.19
+  before_script:
+    - cd ./
+  script:
+    - docker buildx create --name multiarch --driver docker-container --use
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker buildx build -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+Build Service:
+  stage: Package
+  image: docker:20.10.19
+  before_script:
+    - cd ./
+  script:
+    - docker buildx create --name multiarch --driver docker-container --use
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
   only:
     - /^release.*$/
     - /^hotfix.*$/
