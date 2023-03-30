@@ -1,4 +1,17 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM debian:stable-slim AS build-env
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "upgrade","-y"]
+RUN ["apt-get", "install", "-y", "wget"]
+
+RUN ["wget", "https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb", "-O", "packages-microsoft-prod.deb"]
+RUN ["dpkg", "-i", "packages-microsoft-prod.deb"]
+RUN ["rm", "packages-microsoft-prod.deb"]
+
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "dotnet-sdk-7.0"]
+
 WORKDIR /App
 
 # Copy everything
@@ -9,7 +22,23 @@ RUN dotnet restore ./Prodromoi.Api/Prodromoi.Api.csproj
 RUN dotnet publish ./Prodromoi.Api/Prodromoi.Api.csproj -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM debian:stable-slim
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "upgrade","-y"]
+RUN ["apt-get", "install", "-y", "wget"]
+
+RUN ["wget", "https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb", "-O", "packages-microsoft-prod.deb"]
+RUN ["dpkg", "-i", "packages-microsoft-prod.deb"]
+RUN ["rm", "packages-microsoft-prod.deb"]
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "aspnetcore-runtime-7.0"]
+
+RUN ["useradd", "-c", "DOTNET Application", "dotnet.application"]
+
+USER dotnet.application
+
 WORKDIR /App
 COPY --from=build-env /App/out .
 ENTRYPOINT ["dotnet", "Prodromoi.Api.dll"]
