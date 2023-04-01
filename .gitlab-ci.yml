@@ -31,7 +31,6 @@ Version Up:
 
 Build API:
   stage: Package
-  image: docker:23.0.2
   needs:
     - Revision Up
   before_script:
@@ -48,7 +47,6 @@ Build API:
 
 Build DbManager:
   stage: Package
-  image: docker:23.0.2
   needs:
     - Revision Up
   before_script:
@@ -65,7 +63,6 @@ Build DbManager:
 
 Build Service:
   stage: Package
-  image: docker:23.0.2
   needs:
     - Revision Up
   before_script:
