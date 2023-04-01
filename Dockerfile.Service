@@ -1,43 +1,17 @@
-FROM debian:bullseye-slim AS build-env
-
-RUN ["apt-get", "update"]
-RUN ["apt-get", "upgrade","-y"]
-RUN ["apt-get", "install", "-y", "wget"]
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 
 WORKDIR /App
 
-# Copy everything
 COPY . ./
 
-RUN ["chmod", "a+x", "/App/installDotnetSdk.sh"]
-RUN ["/App/installDotnetSdk.sh"]
+RUN ["dotnet", "restore", "./Prodromoi.Service/Prodromoi.Service.csproj"]
+RUN ["dotnet", "publish", "./Prodromoi.Service/Prodromoi.Service.csproj", "-c", "Release", "-o", "out"]
 
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-ENV DOTNET_HOME=/opt/dotnet
 
-# Restore as distinct layers
-RUN dotnet restore ./Prodromoi.Service/Prodromoi.Service.csproj
-# Build and publish a release
-RUN dotnet publish ./Prodromoi.Service/Prodromoi.Service.csproj -c Release -o out
+FROM mcr.microsoft.com/dotnet/runtime:6.0 as runtime
 
-# # Build runtime image
-# FROM debian:bullseye-slim
+WORKDIR /App
 
-# RUN ["apt-get", "update"]
-# RUN ["apt-get", "upgrade","-y"]
-# RUN ["apt-get", "install", "-y", "wget"]
-
-# RUN ["wget", "https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb", "-O", "packages-microsoft-prod.deb"]
-# RUN ["dpkg", "-i", "packages-microsoft-prod.deb"]
-# RUN ["rm", "packages-microsoft-prod.deb"]
-
-# RUN ["apt-get", "update"]
-# RUN ["apt-get", "install", "-y", "aspnetcore-runtime-7.0"]
-
-# RUN ["useradd", "-c", "DOTNET Application", "dotnet.application"]
-
-# USER dotnet.application
-
-# WORKDIR /App
-# COPY --from=build-env /App/out .
-# ENTRYPOINT ["dotnet", "Prodromoi.Service.dll"]
+COPY --from=build-env /App/out .
+EXPOSE 80
+ENTRYPOINT ["dotnet", "Prodromoi.Service.dll"]
