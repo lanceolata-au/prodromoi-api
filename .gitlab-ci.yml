@@ -39,11 +39,12 @@ Build API:
     - Revision Up
   before_script:
     - update-ca-certificates
+    - cat  /usr/local/share/ca-certificates/lata_ca.crt
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
-    - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -55,6 +56,7 @@ Build DbManager:
     - Revision Up
   before_script:
     - update-ca-certificates
+    - cat  /usr/local/share/ca-certificates/lata_ca.crt
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -71,6 +73,7 @@ Build Service:
     - Revision Up
   before_script:
     - update-ca-certificates
+    - cat  /usr/local/share/ca-certificates/lata_ca.crt
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
