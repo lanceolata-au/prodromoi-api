@@ -2,6 +2,7 @@ stages:
     - Revise
     - Prepare
     - Build
+    - Clean
     - Staging
 
 Revision Up:
@@ -54,7 +55,8 @@ Build API:
   - whoami
   script:
     - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
-    - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
+    - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+  allow_failure: true
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -69,6 +71,33 @@ Build DbManager:
   script:
     - docker buildx build -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
     - docker buildx build -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+  allow_failure: true
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+Build Service:
+  stage: Build
+  needs:
+    - Prepare
+  before_script:
+  - whoami
+  script:
+    - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
+    - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+  allow_failure: true
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+Clean:
+  stage: Clean
+  before_script:
+  - whoami
+  script:
+    - docker buildx create rm multiarch 
   only:
     - /^release.*$/
     - /^hotfix.*$/
