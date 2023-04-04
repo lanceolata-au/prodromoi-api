@@ -33,26 +33,14 @@ Version Up:
   only:
     - main
 
-Prepare:
-  stage: Prepare
+Build API:
+  stage: Build
   needs:
     - Revision Up
   before_script:
   - whoami
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  only:
-    - /^release.*$/
-    - /^hotfix.*$/
-    - develop
-
-Build API:
-  stage: Build
-  needs:
-    - Prepare
-  before_script:
-  - whoami
-  script:
     - docker buildx create --name multiarch.api --driver docker-container
     - docker build -f Dockerfile.Api --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
 #    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
@@ -68,10 +56,11 @@ Build API:
 Build DbManager:
   stage: Build
   needs:
-    - Prepare
+    - Revision Up
   before_script:
   - whoami
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.dbmanager --driver docker-container
     - docker build -f Dockerfile.DbManager --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
 #    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
@@ -87,10 +76,11 @@ Build DbManager:
 Build Service:
   stage: Build
   needs:
-    - Prepare
+    - Revision Up
   before_script:
   - whoami
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.service --driver docker-container
     - docker build -f Dockerfile.Service --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
 #    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
