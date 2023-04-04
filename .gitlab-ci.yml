@@ -75,7 +75,7 @@ Build DbManager:
     - develop
 
 Build Service:
-  stage: Package
+  stage: Build
   needs:
     - Prepare
   before_script:
