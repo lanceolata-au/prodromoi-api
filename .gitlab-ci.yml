@@ -14,7 +14,7 @@ Revision Up:
     - num=`expr $VERSION_REVISION + 1`
     - echo $num
     - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION"
-    - 'docker run alpine/curl --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
+    - 'docker run alpine/curl --insecure --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -29,7 +29,7 @@ Version Up:
     - num=`expr $VERSION_REVISION + 1`
     - echo $num
     - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION"
-    - 'docker run alpine/curl --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
+    - 'docker run alpine/curl --insecure --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
   only:
     - main
 
