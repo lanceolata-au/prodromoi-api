@@ -39,7 +39,7 @@ Prepare:
   before_script:
   - whoami
   script:
-    - docker buildx create --name multiarch --driver docker-container --use
+    - docker buildx create --name multiarch --driver docker-container --use --node
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   only:
     - /^release.*$/
