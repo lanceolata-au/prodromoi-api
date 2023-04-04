@@ -1,6 +1,7 @@
 stages:
     - Revise
-    - Package
+    - Prepare
+    - Build
     - Staging
 
 Revision Up:
@@ -19,7 +20,7 @@ Revision Up:
     - develop
 
 Version Up:
-  stage: Revise
+  stage: Build
   before_script:
     - update-ca-certificates
   script:
@@ -31,8 +32,8 @@ Version Up:
   only:
     - main
 
-Build API:
-  stage: Package
+Prepare:
+  stage: Prepare
   needs:
     - Revision Up
   before_script:
@@ -40,6 +41,18 @@ Build API:
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+Build API:
+  stage: Build
+  needs:
+    - Prepare
+  before_script:
+  - whoami
+  script:
     - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
     - docker buildx build -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
   only:
@@ -48,14 +61,12 @@ Build API:
     - develop
 
 Build DbManager:
-  stage: Package
+  stage: Build
   needs:
-    - Revision Up
+    - Prepare
   before_script:
   - whoami
   script:
-    - docker buildx create --name multiarch --driver docker-container --use
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx build -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
     - docker buildx build -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   only:
@@ -66,12 +77,10 @@ Build DbManager:
 Build Service:
   stage: Package
   needs:
-    - Revision Up
+    - Prepare
   before_script:
   - whoami
   script:
-    - docker buildx create --name multiarch --driver docker-container --use
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
     - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   only:
