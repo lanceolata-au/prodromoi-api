@@ -54,8 +54,9 @@ Build API:
   - whoami
   script:
     - docker buildx create --name multiarch.api --driver docker-container
-    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
-    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker build -f Dockerfile.Api --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
+#    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
+#    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
   after_script:
     - docker buildx rm multiarch.api 
@@ -72,8 +73,9 @@ Build DbManager:
   - whoami
   script:
     - docker buildx create --name multiarch.dbmanager --driver docker-container
-    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
-    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker build -f Dockerfile.DbManager --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
+#    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
+#    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
   after_script:
     - docker buildx rm multiarch.dbmanager 
@@ -90,25 +92,12 @@ Build Service:
   - whoami
   script:
     - docker buildx create --name multiarch.service --driver docker-container
-    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
-    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker build -f Dockerfile.Service --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
+#    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
+#    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
   after_script:
     - docker buildx rm multiarch.service 
-  only:
-    - /^release.*$/
-    - /^hotfix.*$/
-    - develop
-
-Build Service:
-  stage: Build
-  needs:
-    - Prepare
-  before_script:
-  - whoami
-  script:
-    - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
-    - docker buildx build -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   only:
     - /^release.*$/
     - /^hotfix.*$/
