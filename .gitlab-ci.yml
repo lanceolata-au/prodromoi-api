@@ -6,7 +6,7 @@ stages:
 Revision Up:
   stage: Revise
   before_script:
-  - update-ca-certificates
+  - whoami
   script:
     - num=0
     - num=`expr $VERSION_REVISION + 1`
@@ -36,8 +36,7 @@ Build API:
   needs:
     - Revision Up
   before_script:
-    - update-ca-certificates
-    - cat  /usr/local/share/ca-certificates/lata_ca.crt
+  - whoami
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -53,8 +52,7 @@ Build DbManager:
   needs:
     - Revision Up
   before_script:
-    - update-ca-certificates
-    - cat  /usr/local/share/ca-certificates/lata_ca.crt
+  - whoami
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -70,8 +68,7 @@ Build Service:
   needs:
     - Revision Up
   before_script:
-    - update-ca-certificates
-    - cat  /usr/local/share/ca-certificates/lata_ca.crt
+  - whoami
   script:
     - docker buildx create --name multiarch --driver docker-container --use
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
