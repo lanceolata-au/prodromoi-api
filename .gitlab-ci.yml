@@ -57,6 +57,8 @@ Build API:
     - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:latest .
     - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
+  after_script:
+    - docker buildx create rm multiarch.api 
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -73,6 +75,8 @@ Build DbManager:
     - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:latest .
     - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
+  after_script:
+    - docker buildx create rm multiarch.dbmanager 
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -89,20 +93,8 @@ Build Service:
     - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:latest .
     - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/prodromoi-service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
-  only:
-    - /^release.*$/
-    - /^hotfix.*$/
-    - develop
-
-Clean:
-  stage: Clean
-  before_script:
-  - whoami
-  script: 
-    - docker buildx create rm multiarch.api 
-    - docker buildx create rm multiarch.dbmanager
+  after_script:
     - docker buildx create rm multiarch.service 
-  allow_failure: true
   only:
     - /^release.*$/
     - /^hotfix.*$/
