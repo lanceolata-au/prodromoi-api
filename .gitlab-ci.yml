@@ -86,6 +86,7 @@ Combine DbManager:
     - Build DbManager amd64
     - Build DbManager arm64v8
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest 
   only:
     - /^release.*$/
