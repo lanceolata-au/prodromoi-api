@@ -2,6 +2,8 @@ stages:
     - Revise
     - Prepare
     - Build
+    - Combine
+    - Push
     - Clean
     - Staging
 
@@ -33,65 +35,91 @@ Version Up:
   only:
     - main
 
-Build API:
+
+
+# Build API:
+#   stage: Build
+#   needs:
+#     - Revision Up
+#   before_script:
+#   - whoami
+#   - ls /etc/docker/certs.d/
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker buildx create --name multiarch.api --driver docker-container
+#     - docker build -f Dockerfile.Api --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
+# #    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
+# #    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+#   allow_failure: true
+#   after_script:
+#     - docker buildx rm multiarch.api 
+#   only:
+#     - /^release.*$/
+#     - /^hotfix.*$/
+#     - develop
+
+Build DbManager amd64:
   stage: Build
   needs:
     - Revision Up
-  before_script:
-  - whoami
-  - ls /etc/docker/certs.d/
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create --name multiarch.api --driver docker-container
-#    - docker build -f Dockerfile.Api --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
-    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
-    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
-  allow_failure: true
-  after_script:
-    - docker buildx rm multiarch.api 
+    - docker build -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest --build-arg ARCH=amd64/ .
   only:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
 
-Build DbManager:
+Build DbManager arm64v8:
   stage: Build
   needs:
     - Revision Up
-  before_script:
-  - whoami
-  - ls /etc/docker/certs.d/
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create --name multiarch.dbmanager --driver docker-container
-#    - docker build -f Dockerfile.DbManager --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
-    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
-    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
-  allow_failure: true
-  after_script:
-    - docker buildx rm multiarch.dbmanager 
+    - docker build -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest --build-arg ARCH=arm64v8/ .
   only:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
 
-Build Service:
-  stage: Build
+Combine DbManager:
+  stage: Combine
   needs:
-    - Revision Up
-  before_script:
-  - whoami
-  - ls /etc/docker/certs.d/
+    - Build DbManager amd64
+    - Build DbManager arm64v8
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create --name multiarch.service --driver docker-container
-#    - docker build -f Dockerfile.Service --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
-  allow_failure: true
-  after_script:
-    - docker buildx rm multiarch.service 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest 
   only:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+
+Push DbManager:
+  stage: Combine
+  needs:
+    - Combine DbManager
+  script:
+    - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+# Build Service:
+#   stage: Build
+#   needs:
+#     - Revision Up
+#   before_script:
+#   - whoami
+#   - ls /etc/docker/certs.d/
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker buildx create --name multiarch.service --driver docker-container
+#     - docker build -f Dockerfile.Service --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
+# #    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
+# #    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+#   allow_failure: true
+#   after_script:
+#     - docker buildx rm multiarch.service 
+#   only:
+#     - /^release.*$/
+#     - /^hotfix.*$/
+#     - develop
