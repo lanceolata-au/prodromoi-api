@@ -39,6 +39,7 @@ Build API:
     - Revision Up
   before_script:
   - whoami
+  - ls /etc/docker/certs.d/
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.api --driver docker-container
@@ -59,6 +60,7 @@ Build DbManager:
     - Revision Up
   before_script:
   - whoami
+  - ls /etc/docker/certs.d/
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.dbmanager --driver docker-container
@@ -79,6 +81,7 @@ Build Service:
     - Revision Up
   before_script:
   - whoami
+  - ls /etc/docker/certs.d/
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.service --driver docker-container
