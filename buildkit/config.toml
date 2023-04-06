@@ -3,4 +3,4 @@ debug = true
 [registry]
 
   [registry."conreg.samon.lata"]
-    ca = ["/etc/docker/certs.d/conreg.samon.lata/ca.pem"]
+    ca = ["/etc/docker/certs.d/conreg.samon.lata/conreg.samon.lata.crt"]
