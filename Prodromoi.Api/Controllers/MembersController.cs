@@ -5,7 +5,7 @@ using Prodromoi.Dto.Members;
 
 namespace Prodromoi.Api.Controllers;
 
-[ApiController]
+//[ApiController]
 [Route("/members")]
 public class MembersController : Controller
 {

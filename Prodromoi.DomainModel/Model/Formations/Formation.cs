@@ -4,10 +4,10 @@ namespace Prodromoi.DomainModel.Model.Formations;
 
 public class Formation : AuditEntity
 {
-    
-    public string Name { get; private set; }
-    
-    
-    
-    public virtual List<FormationSection> Sections { get; private set; }
+
+    public string Name { get; private set; } = string.Empty;
+
+
+
+    public virtual List<FormationSection> Sections { get; private set; } = new();
 }

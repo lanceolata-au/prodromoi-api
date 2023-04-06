@@ -2,7 +2,7 @@ namespace Prodromoi.Dto.Members;
 
 public class MemberDto
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public int? RegistrationNumber { get; set; }
     public DateOnly? DateOfBirth { get; set; } = null;
     public MemberType MemberType { get; set; } = MemberType.Unknown;
