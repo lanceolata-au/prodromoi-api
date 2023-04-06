@@ -1,0 +1,14 @@
+<testsuites>
+  <testsuite name="Prodromoi.Architecture.Tests.dll" tests="1" skipped="0" failures="0" errors="0" time="1.106824" timestamp="2023-04-06T14:31:27" hostname="Owens-MacBook-Pro-16" id="0" package="Prodromoi.Architecture.Tests.dll">
+    <properties />
+    <testcase classname="Prodromoi.Architecture.Tests.Model.AuditTests" name="AuditTests.CanCreateMemberWithAudit" time="1.1068240" />
+    <system-out>
+Test Framework Informational Messages:
+NUnit Adapter 4.2.0.0: Test execution started
+Running all tests in /Users/owenholloway/Code/C#/prodromoi/Prodromoi.Architecture.Tests/bin/Debug/net6.0/Prodromoi.Architecture.Tests.dll
+   NUnit3TestExecutor discovered 1 of 1 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.2.0.0: Test execution complete
+</system-out>
+    <system-err></system-err>
+  </testsuite>
+</testsuites>

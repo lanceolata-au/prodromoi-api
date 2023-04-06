@@ -1,10 +1,26 @@
 stages:
+    - Test
     - Revise
     - Build
     - Staging
 
+Test Architecture:
+  stage: Test
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  script:
+    - dotnet test ./Prodromoi.Architecture.Tests/Prodromoi.Architecture.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  artifacts:
+    when: always
+    paths:
+      - ./**/*test-result.xml
+    reports:
+      junit:
+        - ./**/*test-result.xml
+
 Revision Up:
   stage: Revise
+  needs:
+  - Test Architecture
   before_script:
   - whoami
   script:
@@ -43,7 +59,6 @@ Build API:
     - docker buildx create --name multiarch.api --driver docker-container  --config ./buildkit/config.toml
     - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
     - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
-  allow_failure: true
   after_script:
     - docker buildx rm multiarch.api 
   only:
@@ -63,7 +78,6 @@ Build DbManager:
     - docker buildx create --name multiarch.dbmanager --driver docker-container --config ./buildkit/config.toml
     - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
     - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
-  allow_failure: true
   after_script:
     - docker buildx rm multiarch.dbmanager 
   only:
@@ -83,7 +97,6 @@ Build Service:
     - docker buildx create --name multiarch.service --driver docker-container  --config ./buildkit/config.toml
     - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
     - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
-  allow_failure: true
   after_script:
     - docker buildx rm multiarch.service 
   only:

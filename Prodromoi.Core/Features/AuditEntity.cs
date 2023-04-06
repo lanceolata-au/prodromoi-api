@@ -10,7 +10,7 @@ public class AuditEntity : Entity<int>
     public virtual List<AuditEntry> AuditEntries { get; private set; } = new();
 
     [NotMapped] 
-    public List<AuditDto> PendingAuditEntires { get; private set; } = new();
+    public List<AuditDto> PendingAuditEntries { get; private set; } = new();
 
     protected AuditEntity(){}
         
@@ -47,7 +47,7 @@ public class AuditEntity : Entity<int>
 
     public void Audit(string actor, string entry)
     {
-        PendingAuditEntires.Add(new AuditDto()
+        PendingAuditEntries.Add(new AuditDto()
         {
             Actor = actor,
             Entry = entry
