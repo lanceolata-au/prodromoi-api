@@ -42,8 +42,8 @@ Build Api amd64:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:latest --build-arg ARCH=amd64/ .
-    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=amd64/ .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:latest --build-arg ARCH=amd64 .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=amd64 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -55,8 +55,8 @@ Build Api arm64v8:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:latest --build-arg ARCH=arm64v8/ .
-    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64v8/ .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:latest --build-arg ARCH=arm64v8 .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64v8 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -68,8 +68,8 @@ Build Api arm64:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:latest --build-arg ARCH=arm64/ .
-    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64/ .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:latest --build-arg ARCH=arm64 .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -83,8 +83,8 @@ Build DbManager amd64:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest --build-arg ARCH=amd64/ .
-    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=amd64/ .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest --build-arg ARCH=amd64 .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=amd64 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -96,8 +96,8 @@ Build DbManager arm64v8:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest --build-arg ARCH=arm64v8/ .
-    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64v8/ .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest --build-arg ARCH=arm64v8 .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64v8 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -109,8 +109,8 @@ Build DbManager arm64:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:latest --build-arg ARCH=arm64/ .
-    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64/ .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:latest --build-arg ARCH=arm64 .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -124,8 +124,8 @@ Build Service amd64:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:latest --build-arg ARCH=amd64/ .
-    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=amd64/ .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:latest --build-arg ARCH=amd64 .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=amd64 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -137,8 +137,8 @@ Build Service arm64v8:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:latest --build-arg ARCH=arm64v8/ .
-    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64v8/ .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:latest --build-arg ARCH=arm64v8 .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64v8 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
@@ -150,8 +150,8 @@ Build Service arm64:
     - Revision Up
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:latest --build-arg ARCH=arm64/ .
-    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64/ .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:latest --build-arg ARCH=arm64 .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64 .
   only:
     - /^release.*$/
     - /^hotfix.*$/
