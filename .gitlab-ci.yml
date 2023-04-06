@@ -41,8 +41,8 @@ Build API:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.api --driver docker-container  --config ./buildkit/config.toml
-    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
-    - docker buildx build --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
+    - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
   after_script:
     - docker buildx rm multiarch.api 
@@ -61,8 +61,8 @@ Build DbManager:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.dbmanager --driver docker-container --config ./buildkit/config.toml
-    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
-    - docker buildx build --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
+    - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
   after_script:
     - docker buildx rm multiarch.dbmanager 
@@ -81,8 +81,8 @@ Build Service:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.service --driver docker-container  --config ./buildkit/config.toml
-    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
+    - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
   allow_failure: true
   after_script:
     - docker buildx rm multiarch.service 
