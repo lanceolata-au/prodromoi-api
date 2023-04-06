@@ -8,4 +8,4 @@ insecure-entitlements = [ "network.host", "security.insecure" ]
 [registry]
 
   [registry."conreg.samon.lata"]
-    ca = ["/etc/docker/certs.d/conreg.samon.lata/conreg.samon.lata.crt"]
+    ca = ["/etc/docker/certs.d/conreg.samon.lata/ca.crt"]
