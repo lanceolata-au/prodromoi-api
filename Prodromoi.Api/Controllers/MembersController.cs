@@ -25,8 +25,8 @@ public class MembersController : Controller
     public ActionResult<MemberDto> Create([FromBody]QuickAttendanceDto dto)
     {
         
-        _readWriteRepository
-            .Create<Member, int>();
+        // _readWriteRepository
+        //     .Create<Member, int>();
         
         return Ok(dto);
     }
