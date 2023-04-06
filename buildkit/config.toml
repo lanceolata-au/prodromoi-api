@@ -1,4 +1,9 @@
+# https://docs.docker.com/build/buildkit/toml-configuration/
+# https://docs.docker.com/build/buildkit/configure/#setting-registry-certificates
+
 debug = true
+
+insecure-entitlements = [ "network.host", "security.insecure" ]
 
 [registry]
 
