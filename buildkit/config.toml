@@ -1,0 +1,6 @@
+debug = true
+
+[registry]
+
+  [registry."conreg.samon.lata"]
+    ca = ["/etc/buildkit/certs/conreg.samon.lata/ca.pem"]
