@@ -22,7 +22,7 @@ public class UpgradeService : IHostedService
         return Task.CompletedTask;
     }
 
-    private async void Action()
+    private void Action()
     {
         _stateManager.ResolveDatabaseState();
         

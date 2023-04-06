@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Prodromoi.Api;
 using Prodromoi.Persistence.Features;
 using Serilog;
@@ -9,7 +11,9 @@ var builder = WebApplication
 
 builder.Host
     .UseSerilog()
-    .ConfigureServices(CoreServiceManager.Configure)
+    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(CoreServiceManager.ConfigureContainer)
+    .ConfigureContainer<ContainerBuilder>(ApiServices.ConfigureContainer)
     .ConfigureServices(ApiServices.Configure);
 
 var app = builder.Build();
@@ -22,5 +26,7 @@ app.UseSwaggerUI(cfg =>
 });
 
 app.MapGet("/", () => "Hello World!");
+
+app.MapControllers();
 
 app.Run();

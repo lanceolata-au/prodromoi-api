@@ -68,7 +68,7 @@ public class CoreContext : ProdromoiBaseDbContext
 
         if(!IsAuditEntity(mappedType.Entry.Entity.GetType())) return;
 
-        foreach (var audit in ((AuditEntity)mappedType.Entry.Entity).PendingAuditEntires.Select(entry 
+        foreach (var audit in ((AuditEntity)mappedType.Entry.Entity).PendingAuditEntries.Select(entry 
                      => AuditEntry.Create(
                      entry.Actor,
                      entry.Entry,

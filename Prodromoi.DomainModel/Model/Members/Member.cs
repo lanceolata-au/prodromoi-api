@@ -6,7 +6,7 @@ namespace Prodromoi.DomainModel.Model.Members;
 public class Member : AuditEntity
 {
     public int? RegistrationNumber { get; private set; }
-    public string Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
     public DateOnly? DateOfBirth { get; private set; }
     public MemberType MemberType { get; private set; } = MemberType.Unknown;
     public string? PhoneNumber { get; private set; }
@@ -18,7 +18,7 @@ public class Member : AuditEntity
         {
             Name = dto.Name,
             RegistrationNumber = dto.RegistrationNumber,
-            DateOfBirth = dto.DateOfBirth,
+            DateOfBirth = DateOnly.FromDateTime(dto.DateOfBirth),
             MemberType = dto.MemberType,
             PhoneNumber = dto.PhoneNumber,
             Email = dto.Email
