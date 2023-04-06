@@ -5,14 +5,13 @@
   stage: .pre    
   variables:
     GIT_STRATEGY: fetch
-    GIT_DEPTH: 0 # force a deep/non-shallow fetch need by gitversion
+    GIT_DEPTH: 1000 # force a deep/non-shallow fetch need by gitversion
   cache: [] # caches and before / after scripts can mess things up
   before_script: []
   after_script: []
   script:
     - |
-      echo "CRITICAL ERROR: This original location for this plugin extension (http://$CI_SERVER_HOST/$CI_PROJECT_PATH) is for demonstration and learning purposes only.  There is no SLA for breaking changes and it may change at any time without notice. If you need to depend on it, please make your own isolated copy to depend on. (and delete this message from your copy)"
-
+      
       if [[ "${CI_SCRIPT_TRACE}" == "true" ]] || [[ -n "${CI_DEBUG_TRACE}" ]]; then
         echo "Debugging enabled"
         set -xv

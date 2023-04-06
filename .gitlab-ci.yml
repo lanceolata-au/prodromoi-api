@@ -1,3 +1,18 @@
+variables:
+CI_DEBUG_TRACE: 
+    value: ''
+    description: "Verbose output of all of GitLab's output, including git cloning information. More info: https://docs.gitlab.com/ee/ci/variables/#enable-debug-logging"
+  CI_SCRIPT_TRACE: 
+    value: 'false'
+    description: "Verbose output of CI script."
+  CI_GITVERSION_TRACE: 
+    value: 'true'
+    description: "Gitversion config emited and verbosity set. Default to true in the Guided Exploration for learning purposes."
+  SECURE_LOG_LEVEL: 
+    value: 'debug'
+    description: "Set to one of: 'fatal,warn,error,info,debug' More info: https://docs.gitlab.com/ee/user/application_security/sast/#logging-level"
+  PACKAGENAME: $CI_PROJECT_NAME
+
 stages:
     - .pre
     - Test
