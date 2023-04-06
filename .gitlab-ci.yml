@@ -17,6 +17,12 @@ Test Architecture:
       junit:
         - ./**/*test-result.xml
 
+GitVersion:
+  stage: Revise
+  image: gittools/gitversion:5.6.6
+  script:
+    - gitlab
+
 Revision Up:
   stage: Revise
   needs:
