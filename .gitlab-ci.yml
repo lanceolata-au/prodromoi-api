@@ -27,7 +27,6 @@ Test Architecture:
 Revision Up:
   stage: Revise
   needs:
-  - .pre
   - Test Architecture
   before_script:
   - whoami
