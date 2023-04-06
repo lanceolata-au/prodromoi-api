@@ -1,5 +1,5 @@
 variables:
-CI_DEBUG_TRACE: 
+  CI_DEBUG_TRACE: 
     value: ''
     description: "Verbose output of all of GitLab's output, including git cloning information. More info: https://docs.gitlab.com/ee/ci/variables/#enable-debug-logging"
   CI_SCRIPT_TRACE: 
@@ -12,6 +12,7 @@ CI_DEBUG_TRACE:
     value: 'debug'
     description: "Set to one of: 'fatal,warn,error,info,debug' More info: https://docs.gitlab.com/ee/user/application_security/sast/#logging-level"
   PACKAGENAME: $CI_PROJECT_NAME
+  GIT_DEPTH: "1000"
 
 stages:
     - .pre
