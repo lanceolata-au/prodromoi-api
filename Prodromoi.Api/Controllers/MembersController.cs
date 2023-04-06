@@ -23,7 +23,10 @@ public class MembersController : Controller
     [HttpPost("new")]
     public ActionResult<MemberDto> Create([FromBody]MemberDto dto)
     {
-        _readWriteRepository.Create<Member, int>(Member.Create(dto));
+        
+        _readWriteRepository
+            .Create<Member, int>(Member.Create(dto));
+        
         return Ok(dto);
     }
 

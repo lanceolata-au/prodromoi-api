@@ -18,7 +18,7 @@ public class Member : AuditEntity
         {
             Name = dto.Name,
             RegistrationNumber = dto.RegistrationNumber,
-            DateOfBirth = dto.DateOfBirth,
+            DateOfBirth = DateOnly.FromDateTime(dto.DateOfBirth),
             MemberType = dto.MemberType,
             PhoneNumber = dto.PhoneNumber,
             Email = dto.Email
