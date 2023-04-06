@@ -34,6 +34,7 @@ Version Up:
   only:
     - main
 
+#API
 
 Build Api amd64:
   stage: Build
@@ -61,6 +62,21 @@ Build Api arm64v8:
     - /^hotfix.*$/
     - develop
 
+Build Api arm64:
+  stage: Build
+  needs:
+    - Revision Up
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:latest --build-arg ARCH=arm64/ .
+    - docker build --push -f Dockerfile.Api -t $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64/ .
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+# DBManager
+
 Build DbManager amd64:
   stage: Build
   needs:
@@ -86,6 +102,21 @@ Build DbManager arm64v8:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+
+Build DbManager arm64:
+  stage: Build
+  needs:
+    - Revision Up
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:latest --build-arg ARCH=arm64/ .
+    - docker build --push -f Dockerfile.DbManager -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64/ .
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
+# SERVICE
 
 Build Service amd64:
   stage: Build
@@ -113,26 +144,30 @@ Build Service arm64v8:
     - /^hotfix.*$/
     - develop
 
+Build Service arm64:
+  stage: Build
+  needs:
+    - Revision Up
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:latest --build-arg ARCH=arm64/ .
+    - docker build --push -f Dockerfile.Service -t $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --build-arg ARCH=arm64/ .
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
+
 Combine Api:
   stage: Combine
   needs:
     - Build Api amd64
     - Build Api arm64v8
+    - Build Api arm64
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/api:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:latest 
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/api:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:latest 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/api:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:latest 
     - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/api:latest
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/api-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
     - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION
   only:
     - /^release.*$/
@@ -144,21 +179,12 @@ Combine DbManager:
   needs:
     - Build DbManager amd64
     - Build DbManager arm64v8
+    - Build DbManager arm64
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest 
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:latest 
     - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION  --amend $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION
     - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION
   only:
     - /^release.*$/
@@ -170,19 +196,12 @@ Combine Service:
   needs:
     - Build Service amd64
     - Build Service arm64v8
+    - Build Service arm64
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/service:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:latest 
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/service:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:latest \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:latest 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/service:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:latest --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:latest 
     - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/service:latest
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION \
-    --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
-    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
+    - docker manifest create $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-amd64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64v8:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION --amend $CI_REGISTRY/$CI_PROJECT_PATH/service-arm64:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION 
     - docker manifest push $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION
   only:
     - /^release.*$/
