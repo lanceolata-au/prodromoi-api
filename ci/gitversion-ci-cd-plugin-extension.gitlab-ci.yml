@@ -43,7 +43,7 @@
       #grep 'GitVersion_BuildMetaDataPadded='                  gitversion.properties >> thisversion.env
       #grep 'GitVersion_FullBuildMetaData='                    gitversion.properties >> thisversion.env
       #grep 'GitVersion_MajorMinorPatch='                      gitversion.properties >> thisversion.env
-      #grep 'GitVersion_SemVer='                               gitversion.properties >> thisversion.env
+      grep 'GitVersion_SemVer='                               gitversion.properties >> thisversion.env
       #grep 'GitVersion_LegacySemVer='                         gitversion.properties >> thisversion.env
       #grep 'GitVersion_LegacySemVerPadded='                   gitversion.properties >> thisversion.env
       #grep 'GitVersion_AssemblySemVer='                       gitversion.properties >> thisversion.env
