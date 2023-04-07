@@ -21,15 +21,6 @@ public class CoreContext : ProdromoiBaseDbContext
         modelBuilder
             .Entity<Actor>()
             .AddAuditRelationship();
-
-        modelBuilder
-            .Entity<RecordedAttendance>()
-            .HasKey(ra => new
-            {
-                ra.SectionAttendanceId, 
-                ra.MemberId
-            });
-        
         BuildAttendanceModel(modelBuilder);
         
         base.OnModelCreating(modelBuilder);
@@ -54,7 +45,13 @@ public class CoreContext : ProdromoiBaseDbContext
             .Entity<SectionRecordedAttendance>()
             .AddAuditRelationship();
         
-        //ToDo BuildAttendanceModel
+        modelBuilder
+            .Entity<RecordedAttendance>()
+            .HasKey(ra => new
+            {
+                ra.SectionAttendanceId, 
+                ra.MemberId
+            });
     }
     
     #endregion

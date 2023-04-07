@@ -14,7 +14,7 @@ public class AuditTests : TestWithDi
 
         var members = _readOnlyRepository
             .Table<Member, int>()
-            .AuditIncludes();
+            .IncludeAudits();
 
         var audits = _readOnlyRepository
             .Table<AuditEntry, long>();
