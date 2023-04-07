@@ -1,11 +1,10 @@
 .gitversion_function:
   image: 
     name: gittools/gitversion
-    entrypoint: [""]
-  stage: .pre    
+    entrypoint: [""] 
   variables:
     GIT_STRATEGY: fetch
-    GIT_DEPTH: 0 # force a deep/non-shallow fetch need by gitversion
+    GIT_DEPTH: 1000 # force a deep/non-shallow fetch need by gitversion
   cache: [] # caches and before / after scripts can mess things up
   before_script: []
   after_script: []
