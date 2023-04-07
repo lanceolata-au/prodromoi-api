@@ -22,8 +22,10 @@ Test Architecture:
         - ./**/*test-result.xml
 
 GitVersion:
-  extends: .gitversion_function
   stage: Revise
+  needs: 
+    - Test Architecture
+  extends: .gitversion_function
 
 Version Up:
   stage: Build
