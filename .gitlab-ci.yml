@@ -1,9 +1,8 @@
 stages:
-    - .pre
     - Test
     - Revise
     - Build
-    - Staging
+    - Release
 
 include:
   - local: '/build/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
@@ -27,21 +26,9 @@ GitVersion:
     - Test Architecture
   extends: .gitversion_function
 
-Version Up:
-  stage: Build
-  before_script:
-    - update-ca-certificates
-  script:
-    - num=0
-    - num=`expr $VERSION_REVISION + 1`
-    - echo $num
-    - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION"
-    - 'docker run alpine/curl --insecure --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
-  only:
-    - main
-
 Build API:
   stage: Build
+  timeout: 30m
   needs:
     - GitVersion
   before_script:
@@ -60,6 +47,7 @@ Build API:
 
 Build DbManager:
   stage: Build
+  timeout: 30m
   needs:
     - GitVersion
   before_script:
@@ -78,6 +66,7 @@ Build DbManager:
 
 Build Service:
   stage: Build
+  timeout: 30m
   needs:
     - GitVersion
   before_script:
@@ -94,4 +83,43 @@ Build Service:
     - /^hotfix.*$/
     - develop
 
+Pre-Release:
+  stage: Release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  pre_release: true
+  needs:
+    - GitVersion
+    - Build API
+    - Build DbManager
+    - Build Service
+  script:
+    - echo "Pre-release $GitVersion_FullSemVer"
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+  release:
+    name: 'Prodromoi $GitVersion_FullSemVer'
+    tag_name: $GitVersion_FullSemVer
+  only:
+    - develop
 
+Release:
+  stage: Release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  pre_release: false
+  needs:
+    - GitVersion
+    - Build API
+    - Build DbManager
+    - Build Service
+  script:
+    - echo "Pre-release $GitVersion_FullSemVer"
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+  release:
+    name: 'Prodromoi $GitVersion_FullSemVer'
+    tag_name: $GitVersion_FullSemVer
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
