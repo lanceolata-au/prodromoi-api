@@ -11,8 +11,8 @@ public class TestWithDi
     
     private IContainer _container;
 
-    internal IReadOnlyRepository _readOnlyRepository;
-    internal IReadWriteRepository _readWriteRepository;
+    public IReadOnlyRepository _readOnlyRepository;
+    public IReadWriteRepository _readWriteRepository;
 
     internal MemberOperation _memberOperation;
     

@@ -22,7 +22,7 @@ app.UseSwagger();
 
 app.UseSwaggerUI(cfg =>
 {
-    cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "Prodromoi V1");
 });
 
 app.MapGet("/", () => "Hello World!");

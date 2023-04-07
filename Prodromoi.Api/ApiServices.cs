@@ -21,7 +21,7 @@ public static class ApiServices
         
         services.AddSwaggerGen(cnf =>
         {
-            cnf.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"});
+            cnf.SwaggerDoc("v1", new OpenApiInfo {Title = "Prodromoi", Version = "v1"});
         });
 
     }

@@ -1,8 +1,6 @@
 using Autofac;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Prodromoi.Persistence.Features.Functions;
 using Prodromoi.Persistence.Modules;
 using Serilog;
 
@@ -28,8 +26,6 @@ public class PersistenceFactory
         
         builder.RegisterModule<DatabaseStoreModule>();
 
-        builder.RegisterType<TestDataCreator>();
-        
         return builder.Build();
 
     }

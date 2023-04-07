@@ -15,7 +15,7 @@ create table section_recorded_attendances (
 );
 
 create table recorded_attendances (
-    id serial8 primary key,
     section_attendance_id int not null references section_recorded_attendances(id),
-    member_id int not null references members(id)
+    member_id int not null references members(id),
+    CONSTRAINT recorded_attendances_pk PRIMARY KEY (section_attendance_id, member_id)
 );

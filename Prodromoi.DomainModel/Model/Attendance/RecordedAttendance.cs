@@ -1,15 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Prodromoi.Core.Features;
 using Prodromoi.DomainModel.Model.Members;
 
 namespace Prodromoi.DomainModel.Model.Attendance;
 
-public class RecordedAttendance : AuditEntity
+public class RecordedAttendance : Entity<bool>
 {
-    public int RecordingAdultId { get; private set; } = -1;
-    public virtual Member RecordingAdult { get; private set; } = new();
+    [NotMapped] 
+    public override bool Id { get; protected set; }
 
-    public virtual List<MemberAttendance> RecordedAttendances { get; private set; } = new();
-
-    public DateTime Recorded { get; private set; } = new();
+    [Key]
+    [Column(Order = 1)]
+    public int SectionAttendanceId;
+    
+    [Key]
+    [Column(Order = 2)]
+    public int MemberId;
 
 }
