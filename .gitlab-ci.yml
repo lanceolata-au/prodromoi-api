@@ -8,14 +8,10 @@ stages:
 include:
   - local: '/build/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
 
-determineversion:
-  extends: .gitversion_function
-
 Test Architecture:
   stage: Test
   image: mcr.microsoft.com/dotnet/sdk:6.0
   script:
-    - echo "$GitVersion_FullSemVer"
     - dotnet test ./Prodromoi.Architecture.Tests/Prodromoi.Architecture.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
     when: always
@@ -25,10 +21,15 @@ Test Architecture:
       junit:
         - ./**/*test-result.xml
 
+GitVersion:
+  extends: .gitversion_function
+  stage: Revise
+
 Revision Up:
   stage: Revise
   needs:
   - Test Architecture
+  - GitVersion
   before_script:
   - whoami
   script:
