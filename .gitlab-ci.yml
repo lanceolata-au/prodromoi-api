@@ -1,14 +1,15 @@
 stages:
-    - Test
-    - Revise
-    - Build
-    - Release
+    - test
+    - revise
+    - build
+    - release
 
 include:
   - local: '/ci/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
+  - template: Security/SAST.gitlab-ci.yml
 
 Test Api:
-  stage: Test
+  stage: test
   image: mcr.microsoft.com/dotnet/sdk:6.0
   script:
     - dotnet test ./Prodromoi.Api.Tests/Prodromoi.Api.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
@@ -21,7 +22,7 @@ Test Api:
         - ./**/*test-result.xml
 
 Test Architecture:
-  stage: Test
+  stage: test
   image: mcr.microsoft.com/dotnet/sdk:6.0
   script:
     - dotnet test ./Prodromoi.Architecture.Tests/Prodromoi.Architecture.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
@@ -35,7 +36,7 @@ Test Architecture:
 
 
 GitVersion:
-  stage: Revise
+  stage: revise
   needs: 
     - Test Api
     - Test Architecture
@@ -46,7 +47,7 @@ GitVersion:
     - develop
 
 Build API:
-  stage: Build
+  stage: build
   timeout: 30m
   needs:
     - GitVersion
@@ -65,7 +66,7 @@ Build API:
     - develop
 
 Build DbManager:
-  stage: Build
+  stage: build
   timeout: 30m
   needs:
     - GitVersion
@@ -84,7 +85,7 @@ Build DbManager:
     - develop
 
 Build Service:
-  stage: Build
+  stage: build
   timeout: 30m
   needs:
     - GitVersion
@@ -103,7 +104,7 @@ Build Service:
     - develop
 
 Pre-Release:
-  stage: Release
+  stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   needs:
     - GitVersion
@@ -123,7 +124,7 @@ Pre-Release:
     - develop
 
 Release:
-  stage: Release
+  stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   needs:
     - GitVersion
