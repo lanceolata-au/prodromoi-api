@@ -30,13 +30,39 @@
       # We could just collect the output file gitversion.properties (with artifacts:report:dotenv: gitversion.properties as it is already in DOTENV format, 
       # however it contains ~33 variables which unnecessarily consumes many of the 50 max DOTENV variables of the free GitLab version.
       # Limits are higher for licensed editions, see https://docs.gitlab.com/ee/ci/yaml/artifacts_reports.html#artifactsreportsdotenv
-      grep 'GitVersion_LegacySemVer='          gitversion.properties >> thisversion.env
-      grep 'GitVersion_SemVer='          gitversion.properties >> thisversion.env
-      grep 'GitVersion_FullSemVer='      gitversion.properties >> thisversion.env
-      grep 'GitVersion_Major='           gitversion.properties >> thisversion.env
-      grep 'GitVersion_Minor='           gitversion.properties >> thisversion.env
-      grep 'GitVersion_Patch='           gitversion.properties >> thisversion.env
-      grep 'GitVersion_MajorMinorPatch=' gitversion.properties >> thisversion.env
+      grep 'GitVersion_Major='                                gitversion.properties >> thisversion.env
+      grep 'GitVersion_Minor='                                gitversion.properties >> thisversion.env
+      grep 'GitVersion_Patch='                                gitversion.properties >> thisversion.env
+      grep 'GitVersion_PreReleaseTag='                        gitversion.properties >> thisversion.env
+      grep 'GitVersion_PreReleaseTagWithDash='                gitversion.properties >> thisversion.env
+      grep 'GitVersion_PreReleaseLabel='                      gitversion.properties >> thisversion.env
+      grep 'GitVersion_PreReleaseLabelWithDash='              gitversion.properties >> thisversion.env
+      grep 'GitVersion_PreReleaseNumber='                     gitversion.properties >> thisversion.env
+      grep 'GitVersion_WeightedPreReleaseNumber='             gitversion.properties >> thisversion.env
+      grep 'GitVersion_BuildMetaData='                        gitversion.properties >> thisversion.env
+      grep 'GitVersion_BuildMetaDataPadded='                  gitversion.properties >> thisversion.env
+      grep 'GitVersion_FullBuildMetaData='                    gitversion.properties >> thisversion.env
+      grep 'GitVersion_MajorMinorPatch='                      gitversion.properties >> thisversion.env
+      grep 'GitVersion_SemVer='                               gitversion.properties >> thisversion.env
+      grep 'GitVersion_LegacySemVer='                         gitversion.properties >> thisversion.env
+      grep 'GitVersion_LegacySemVerPadded='                   gitversion.properties >> thisversion.env
+      grep 'GitVersion_AssemblySemVer='                       gitversion.properties >> thisversion.env
+      grep 'GitVersion_AssemblySemFileVer='                   gitversion.properties >> thisversion.env
+      grep 'GitVersion_FullSemVer='                           gitversion.properties >> thisversion.env
+      grep 'GitVersion_InformationalVersion='                 gitversion.properties >> thisversion.env
+      grep 'GitVersion_BranchName='                           gitversion.properties >> thisversion.env
+      grep 'GitVersion_EscapedBranchName='                    gitversion.properties >> thisversion.env
+      grep 'GitVersion_Sha='                                  gitversion.properties >> thisversion.env
+      grep 'GitVersion_ShortSha='                             gitversion.properties >> thisversion.env
+      grep 'GitVersion_NuGetVersionV2='                       gitversion.properties >> thisversion.env
+      grep 'GitVersion_NuGetVersion='                         gitversion.properties >> thisversion.env
+      grep 'GitVersion_NuGetPreReleaseTagV2='                 gitversion.properties >> thisversion.env
+      grep 'GitVersion_NuGetPreReleaseTag='                   gitversion.properties >> thisversion.env
+      grep 'GitVersion_VersionSourceSha='                     gitversion.properties >> thisversion.env
+      grep 'GitVersion_CommitsSinceVersionSource='            gitversion.properties >> thisversion.env
+      grep 'GitVersion_CommitsSinceVersionSourcePadded='      gitversion.properties >> thisversion.env
+      grep 'GitVersion_UncommittedChanges='                   gitversion.properties >> thisversion.env
+      grep 'GitVersion_CommitDate='                           gitversion.properties >> thisversion.env
   artifacts:
     reports:
       #propagates variables into the pipeline level

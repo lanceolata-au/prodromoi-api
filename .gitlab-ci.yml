@@ -25,25 +25,6 @@ GitVersion:
   extends: .gitversion_function
   stage: Revise
 
-Revision Up:
-  stage: Revise
-  needs:
-  - Test Architecture
-  - GitVersion
-  before_script:
-  - whoami
-  script:
-    - echo "$GitVersion_FullSemVer"
-    - num=0
-    - num=`expr $VERSION_REVISION + 1`
-    - echo $num
-    - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION"
-    - 'docker run alpine/curl --insecure --request PUT --header "PRIVATE-TOKEN: $API_TOKEN" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/VERSION_REVISION" --form "value=$num"'
-  only:
-    - /^release.*$/
-    - /^hotfix.*$/
-    - develop
-
 Version Up:
   stage: Build
   before_script:
@@ -60,7 +41,7 @@ Version Up:
 Build API:
   stage: Build
   needs:
-    - Revision Up
+    - GitVersion
   before_script:
   - whoami
   - ls -R /etc/docker/certs.d/
@@ -68,7 +49,7 @@ Build API:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.api --driver docker-container  --config ./buildkit/config.toml
     - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
-    - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$GitVersion_FullSemVer .
   after_script:
     - docker buildx rm multiarch.api 
   only:
@@ -79,7 +60,7 @@ Build API:
 Build DbManager:
   stage: Build
   needs:
-    - Revision Up
+    - GitVersion
   before_script:
   - whoami
   - ls -R /etc/docker/certs.d/
@@ -87,7 +68,7 @@ Build DbManager:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.dbmanager --driver docker-container --config ./buildkit/config.toml
     - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
-    - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$GitVersion_FullSemVer .
   after_script:
     - docker buildx rm multiarch.dbmanager 
   only:
@@ -98,7 +79,7 @@ Build DbManager:
 Build Service:
   stage: Build
   needs:
-    - Revision Up
+    - GitVersion
   before_script:
   - whoami
   - ls -R /etc/docker/certs.d/
@@ -106,7 +87,7 @@ Build Service:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.service --driver docker-container  --config ./buildkit/config.toml
     - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$VERSION_MAJOR.$VERSION_MINOR.$VERSION_REVISION .
+    - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_FullSemVer .
   after_script:
     - docker buildx rm multiarch.service 
   only:
