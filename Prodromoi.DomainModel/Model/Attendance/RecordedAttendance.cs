@@ -12,7 +12,7 @@ public class RecordedAttendance : Entity<short>
 
     [Key] [Column(Order = 1)] 
     public int SectionAttendanceId { get; private set; } = 0;
-    public virtual SectionRecordedAttendance? SectionRecordedAttendance { get; private set; }
+    public virtual SectionRecordedAttendance? SectionAttendance { get; private set; }
     
     [Key]
     [Column(Order = 2)]

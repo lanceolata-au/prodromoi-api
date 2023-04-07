@@ -10,7 +10,7 @@ public static class RecordedAttendanceIncludes
         return project
             .Include(ra => ra.Member)
             .ThenInclude(mb => mb!.AuditEntries)
-            .Include(ra => ra.SectionRecordedAttendance)
+            .Include(ra => ra.SectionAttendance)
             .ThenInclude(sra => sra!.AuditEntries);
     }
 }

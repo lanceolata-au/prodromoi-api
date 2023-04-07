@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Prodromoi.Core.Extensions;
 using Prodromoi.Core.Interfaces;
@@ -45,11 +46,13 @@ public class AttendanceController : Controller
             dto.RecordingAdult.MemberType = MemberType.AdultUnknown;
             recordingAdult = Member.Create(dto.RecordingAdult);
             _readWriteRepository.Create<Member, int>(recordingAdult);
+            _readWriteRepository.Commit();
         }
         
         var sectionRecordedAttendance = SectionRecordedAttendance.Create(recordingAdult);
         sectionRecordedAttendance.Audit($"{recordingAdult.Name}", "Created from API");
         _readWriteRepository.Create<SectionRecordedAttendance, int>(sectionRecordedAttendance);
+        _readWriteRepository.Commit();
 
         var recordingAdultRecordedAttendance = RecordedAttendance
             .Create(sectionRecordedAttendance, recordingAdult);
