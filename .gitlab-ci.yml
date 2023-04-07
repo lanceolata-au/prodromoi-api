@@ -45,8 +45,7 @@ Build API:
   needs:
     - GitVersion
   before_script:
-  - whoami
-  - ls -R /etc/docker/certs.d/
+    - echo "$GitVersion_FullSemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.api --driver docker-container  --config ./buildkit/config.toml
@@ -64,8 +63,7 @@ Build DbManager:
   needs:
     - GitVersion
   before_script:
-  - whoami
-  - ls -R /etc/docker/certs.d/
+    - echo "$GitVersion_FullSemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.dbmanager --driver docker-container --config ./buildkit/config.toml
@@ -83,8 +81,7 @@ Build Service:
   needs:
     - GitVersion
   before_script:
-  - whoami
-  - ls -R /etc/docker/certs.d/
+    - echo "$GitVersion_FullSemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.service --driver docker-container  --config ./buildkit/config.toml
@@ -96,3 +93,5 @@ Build Service:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+
+
