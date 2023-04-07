@@ -6,14 +6,14 @@ using Prodromoi.Dto.Members;
 
 namespace Prodromoi.Api.Controllers;
 
-//[ApiController]
-[Route("/members")]
-public class MembersController : Controller
+[ApiController]
+[Route("/attendance")]
+public class AttendanceController : Controller
 {
     private readonly IReadOnlyRepository _readOnlyRepository;
     private readonly IReadWriteRepository _readWriteRepository;
 
-    public MembersController(
+    public AttendanceController(
         IReadOnlyRepository readOnlyRepository, 
         IReadWriteRepository readWriteRepository)
     {
@@ -25,8 +25,6 @@ public class MembersController : Controller
     public ActionResult<MemberDto> Create([FromBody]QuickAttendanceDto dto)
     {
         
-        // _readWriteRepository
-        //     .Create<Member, int>();
         
         return Ok(dto);
     }
