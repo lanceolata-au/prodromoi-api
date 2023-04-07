@@ -7,11 +7,6 @@ stages:
 include:
   - local: '/ci/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
 
-SAST:
-  stage: Test
-  include:
-  - template: Security/SAST.gitlab-ci.yml
-
 Test Api:
   stage: Test
   image: mcr.microsoft.com/dotnet/sdk:6.0
@@ -42,7 +37,6 @@ Test Architecture:
 GitVersion:
   stage: Revise
   needs: 
-    - SAST
     - Test Api
     - Test Architecture
   extends: .gitversion_function
