@@ -94,9 +94,6 @@ Pre-Release:
     - Build Service
   script:
     - echo "Pre-release $GitVersion_FullSemVer"
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never
   release:
     name: 'Prodromoi $GitVersion_FullSemVer'
     tag_name: $GitVersion_FullSemVer
@@ -114,9 +111,6 @@ Release:
     - Build Service
   script:
     - echo "Pre-release $GitVersion_FullSemVer"
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never
   release:
     name: 'Prodromoi $GitVersion_FullSemVer'
     tag_name: $GitVersion_FullSemVer
