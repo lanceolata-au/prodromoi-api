@@ -21,7 +21,6 @@ public class CoreContext : ProdromoiBaseDbContext
         modelBuilder
             .Entity<Actor>()
             .AddAuditRelationship();
-        
         BuildAttendanceModel(modelBuilder);
         
         base.OnModelCreating(modelBuilder);
@@ -33,16 +32,26 @@ public class CoreContext : ProdromoiBaseDbContext
     #region attendance
 
     public DbSet<Member> Members { get; set; }
-    public DbSet<MemberAttendance> RecordedAttendances { get; set; }
-    public DbSet<RecordedAttendance> SectionRecordedAttendances { get; set; }
+    public DbSet<RecordedAttendance> RecordedAttendances { get; set; }
+    public DbSet<SectionRecordedAttendance> SectionRecordedAttendances { get; set; }
 
     private static void BuildAttendanceModel(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<MemberAttendance>()
-            .HasOne<Member>(ra => ra.Member)
-            .WithOne()
-            .HasForeignKey<MemberAttendance>(ra => ra.MemberId);
+            .Entity<Member>()
+            .AddAuditRelationship();
+        
+        modelBuilder
+            .Entity<SectionRecordedAttendance>()
+            .AddAuditRelationship();
+        
+        modelBuilder
+            .Entity<RecordedAttendance>()
+            .HasKey(ra => new
+            {
+                ra.SectionAttendanceId, 
+                ra.MemberId
+            });
     }
     
     #endregion

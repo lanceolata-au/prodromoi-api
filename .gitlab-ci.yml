@@ -5,7 +5,20 @@ stages:
     - Release
 
 include:
-  - local: '/build/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
+  - local: '/ci/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
+
+Test Api:
+  stage: Test
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  script:
+    - dotnet test ./Prodromoi.Api.Tests/Prodromoi.Api.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  artifacts:
+    when: always
+    paths:
+      - ./**/*test-result.xml
+    reports:
+      junit:
+        - ./**/*test-result.xml
 
 Test Architecture:
   stage: Test
@@ -20,11 +33,17 @@ Test Architecture:
       junit:
         - ./**/*test-result.xml
 
+
 GitVersion:
   stage: Revise
   needs: 
+    - Test Api
     - Test Architecture
   extends: .gitversion_function
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
 
 Build API:
   stage: Build
@@ -35,7 +54,7 @@ Build API:
     - echo "$GitVersion_FullSemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create --name multiarch.api --driver docker-container  --config ./buildkit/config.toml
+    - docker buildx create --name multiarch.api --driver docker-container  --config ./ci/config.toml
     - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
     - docker buildx build --provenance false --builder multiarch.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$GitVersion_FullSemVer .
   after_script:
@@ -54,7 +73,7 @@ Build DbManager:
     - echo "$GitVersion_FullSemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create --name multiarch.dbmanager --driver docker-container --config ./buildkit/config.toml
+    - docker buildx create --name multiarch.dbmanager --driver docker-container --config ./ci/config.toml
     - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
     - docker buildx build --provenance false --builder multiarch.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$GitVersion_FullSemVer .
   after_script:
@@ -73,7 +92,7 @@ Build Service:
     - echo "$GitVersion_FullSemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create --name multiarch.service --driver docker-container  --config ./buildkit/config.toml
+    - docker buildx create --name multiarch.service --driver docker-container  --config ./ci/config.toml
     - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
     - docker buildx build --provenance false --builder multiarch.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_FullSemVer .
   after_script:

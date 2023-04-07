@@ -1,3 +1,4 @@
+using Prodromoi.Core.Extensions;
 using Prodromoi.Core.Features;
 using Prodromoi.Dto.Members;
 
@@ -20,7 +21,7 @@ public class Member : AuditEntity
             RegistrationNumber = dto.RegistrationNumber,
             DateOfBirth = DateOnly.FromDateTime(dto.DateOfBirth),
             MemberType = dto.MemberType,
-            PhoneNumber = dto.PhoneNumber,
+            PhoneNumber = dto.PhoneNumber.PhoneNumberString(),
             Email = dto.Email
         };
 
@@ -30,5 +31,5 @@ public class Member : AuditEntity
         
         return obj;
     }
-    
+
 }

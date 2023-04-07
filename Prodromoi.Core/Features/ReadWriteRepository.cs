@@ -19,7 +19,7 @@ namespace Prodromoi.Core.Features
         {
             try
             {
-                var result = _context.SaveChangesAsync().Result;
+                _ = _context.SaveChangesAsync().Result;
             }
             catch (Exception e)
             {
@@ -119,7 +119,7 @@ namespace Prodromoi.Core.Features
         {
             try
             {
-                var result = _context.SaveChangesAsync().Result;
+                _ =  _context.SaveChangesAsync().Result;
             }
             catch (Exception e)
             {
