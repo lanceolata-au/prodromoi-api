@@ -25,6 +25,10 @@ GitVersion:
   needs: 
     - Test Architecture
   extends: .gitversion_function
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - develop
 
 Build API:
   stage: Build
