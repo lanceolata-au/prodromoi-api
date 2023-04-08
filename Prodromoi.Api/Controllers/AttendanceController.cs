@@ -25,7 +25,7 @@ public class AttendanceController : Controller
     }
 
     [HttpPost("new")]
-    public ActionResult<MemberDto> Create([FromBody]QuickAttendanceDto dto)
+    public ActionResult<QuickAttendanceDto> Create([FromBody]QuickAttendanceDto dto)
     {
         var adultSearchResult 
             = _readOnlyRepository
@@ -66,7 +66,7 @@ public class AttendanceController : Controller
                 = _readOnlyRepository
                     .Table<Member, int>()
                     .Where(m => 
-                        m.PhoneNumber == null &&
+                        m.PhoneNumber == string.Empty &&
                         m.Name.Equals(memberAttendanceDto.Member.Name));
 
             Member recordedYouth;
@@ -81,6 +81,7 @@ public class AttendanceController : Controller
                 youthDto.MemberType = MemberType.YouthUnknown;
                 recordedYouth = Member.Create(youthDto);
                 _readWriteRepository.Create<Member, int>(recordedYouth);
+                _readWriteRepository.Commit();
             }
 
             var youthRecordedAttendance = RecordedAttendance
