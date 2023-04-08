@@ -20,7 +20,7 @@ public static class ApiServices
         services.AddControllers();
         services.AddCors(options =>
         {
-            options.AddPolicy(name: "_allowedOrigins",
+            options.AddPolicy(name: "CorsPolicy",
                 policy =>
                 {
                     policy.AllowAnyHeader();

@@ -25,10 +25,8 @@ app.UseSwaggerUI(cfg =>
     cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "Prodromoi V1");
 });
 
-app.UseCors("_allowedOrigins");
-
-app.MapGet("/", () => "Hello World!");
-
+app.MapGet("/", () => "OK");
+app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.Run();

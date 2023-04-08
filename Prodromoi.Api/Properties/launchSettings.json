@@ -18,8 +18,9 @@
         "DB_DATABASE": "macbook_test",
         "DB_HOST": "192.168.2.20",
         "DB_PASS": "@!#D3F8ltP3ssw@rd",
-        "DB_PORT": "31433",
+        "DB_PORT": 31433,
         "DB_USER": "postgres"
+
       }
     },
     "https": {
@@ -32,7 +33,7 @@
         "DB_DATABASE": "macbook_test",
         "DB_HOST": "192.168.2.20",
         "DB_PASS": "@!#D3F8ltP3ssw@rd",
-        "DB_PORT": "31433",
+        "DB_PORT": 31433,
         "DB_USER": "postgres"
       }
     }
