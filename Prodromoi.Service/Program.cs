@@ -5,8 +5,6 @@ using Prodromoi.Persistence.Features;
 using Prodromoi.Service;
 using Serilog;
 
-Log.Logger = Logging.CreateLogger();
-
 Log.Information("Starting Host");
 
 Host.CreateDefaultBuilder(args)
