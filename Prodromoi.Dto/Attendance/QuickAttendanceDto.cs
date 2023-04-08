@@ -4,6 +4,6 @@ namespace Prodromoi.Dto.Attendance;
 
 public class QuickAttendanceDto
 {
-    public MemberDto RecordingAdult = new();
-    public List<MemberAttendanceDto> Attendances = new();
+    public MemberDto RecordingAdult { get; set; } = new();
+    public List<MemberAttendanceDto> Attendances { get; set; }  = new();
 }

@@ -24,7 +24,7 @@ public class AttendanceController : Controller
     }
 
     [HttpPost("new")]
-    public ActionResult<MemberDto> Create([FromBody]QuickAttendanceDto dto)
+    public ActionResult<QuickAttendanceDto> Create([FromBody]QuickAttendanceDto dto)
     {
         var adultSearchResult 
             = _readOnlyRepository
@@ -45,11 +45,13 @@ public class AttendanceController : Controller
             dto.RecordingAdult.MemberType = MemberType.AdultUnknown;
             recordingAdult = Member.Create(dto.RecordingAdult);
             _readWriteRepository.Create<Member, int>(recordingAdult);
+            _readWriteRepository.Commit();
         }
         
         var sectionRecordedAttendance = SectionRecordedAttendance.Create(recordingAdult);
         sectionRecordedAttendance.Audit($"{recordingAdult.Name}", "Created from API");
         _readWriteRepository.Create<SectionRecordedAttendance, int>(sectionRecordedAttendance);
+        _readWriteRepository.Commit();
 
         var recordingAdultRecordedAttendance = RecordedAttendance
             .Create(sectionRecordedAttendance, recordingAdult);
@@ -78,6 +80,7 @@ public class AttendanceController : Controller
                 youthDto.MemberType = MemberType.YouthUnknown;
                 recordedYouth = Member.Create(youthDto);
                 _readWriteRepository.Create<Member, int>(recordedYouth);
+                _readWriteRepository.Commit();
             }
 
             var youthRecordedAttendance = RecordedAttendance

@@ -18,7 +18,16 @@ public static class ApiServices
         IServiceCollection services)
     {
         services.AddControllers();
-        
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "CorsPolicy",
+                policy =>
+                {
+                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyOrigin();
+                });
+        });
         services.AddSwaggerGen(cnf =>
         {
             cnf.SwaggerDoc("v1", new OpenApiInfo {Title = "Prodromoi", Version = "v1"});

@@ -13,7 +13,7 @@ public class SectionRecordedAttendance : AuditEntity
         var obj = new SectionRecordedAttendance
         {
             RecordingAdultId = member.Id,
-            Recorded = DateTime.Now
+            Recorded = DateTime.Now.ToUniversalTime()
         };
 
         return obj;
