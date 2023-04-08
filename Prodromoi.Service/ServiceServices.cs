@@ -1,6 +1,7 @@
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Prodromoi.Service;
 
@@ -11,9 +12,12 @@ public static class ServiceServices
     }
 
     internal static void ConfigureContainer(
-        HostBuilderContext hostContext,
+        HostBuilderContext context,
         ContainerBuilder container)
-    {
+    {        
+        Log.Logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(context.Configuration)
+        .CreateLogger();
     }
     
 }

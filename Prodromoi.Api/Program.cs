@@ -4,8 +4,6 @@ using Prodromoi.Api;
 using Prodromoi.Persistence.Features;
 using Serilog;
 
-Log.Logger = Logging.CreateLogger();
-
 var builder = WebApplication
     .CreateBuilder(args);
 

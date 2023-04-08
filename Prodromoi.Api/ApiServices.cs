@@ -1,5 +1,6 @@
 using Autofac;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace Prodromoi.Api;
 
@@ -17,6 +18,11 @@ public static class ApiServices
         HostBuilderContext context, 
         IServiceCollection services)
     {
+        
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(context.Configuration)
+            .CreateLogger();
+        
         services.AddControllers();
         services.AddCors(options =>
         {
