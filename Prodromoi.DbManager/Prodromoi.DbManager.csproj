@@ -22,6 +22,9 @@
       <None Update="SQL\01_structure\20230320_attendance.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SQL\01_structure\20230409_formations_sections.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
