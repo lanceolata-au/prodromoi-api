@@ -44,6 +44,7 @@ GitVersion:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+    - main
 
 Build API:
   stage: Build
@@ -63,6 +64,7 @@ Build API:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+    - main
 
 Build DbManager:
   stage: Build
@@ -82,6 +84,7 @@ Build DbManager:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+    - main
 
 Build Service:
   stage: Build
@@ -101,6 +104,7 @@ Build Service:
     - /^release.*$/
     - /^hotfix.*$/
     - develop
+    - main
 
 Pre-Release:
   stage: Release
@@ -120,6 +124,8 @@ Pre-Release:
       
       $GitVersion_InformationalVersion
   only:
+    - /^release.*$/
+    - /^hotfix.*$/
     - develop
 
 Release:
@@ -140,5 +146,4 @@ Release:
 
       $GitVersion_InformationalVersion
   only:
-    - /^release.*$/
-    - /^hotfix.*$/
+    - main
