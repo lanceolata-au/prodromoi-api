@@ -31,5 +31,24 @@ public class Member : AuditEntity
         
         return obj;
     }
+    
+    public static Member Create(MemberTinyDto dto)
+    {
+        var obj = new Member()
+        {
+            Name = dto.Name,
+            RegistrationNumber = -1,
+            DateOfBirth = DateOnly.Parse("1899-12-31"),
+            MemberType = dto.MemberType,
+            PhoneNumber = dto.PhoneNumber.PhoneNumberString(),
+            Email = string.Empty
+        };
+
+        obj.Audit(
+            "System", 
+            $"Created new member named {dto.Name}, of type {dto.MemberType}");
+        
+        return obj;
+    }
 
 }
