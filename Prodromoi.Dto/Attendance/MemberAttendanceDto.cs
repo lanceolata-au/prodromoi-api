@@ -6,6 +6,6 @@ public class MemberAttendanceDto
 {
     public bool Present { get; set; } = true;
 
-    public MemberDto Member { get; set; } = new();
+    public MemberTinyDto Member { get; set; } = new();
 
 }
