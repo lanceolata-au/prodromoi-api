@@ -147,3 +147,5 @@ Release:
       $GitVersion_InformationalVersion
   only:
     - main
+
+    
