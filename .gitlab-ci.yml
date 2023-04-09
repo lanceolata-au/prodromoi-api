@@ -158,4 +158,8 @@ Clean:
     - Build Service
   script:
     docker system prune -a --force
-  
+  only:
+    - develop
+    - /^release.*$/
+    - /^hotfix.*$/
+    - main
