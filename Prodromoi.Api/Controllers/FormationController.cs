@@ -35,12 +35,13 @@ public class FormationController : Controller
             .BasicIncludes()
             .Single();
 
-        return Ok(formationSection.MapDto());
+        return Ok(formationSection.MapDto(_hashIdTranslator));
     }
     
     [HttpGet("{sectionFriendlyCode}/friendlycode")]
     public ActionResult<FormationSectionDto> GetByFriendlyName(string sectionFriendlyCode)
     {
+        sectionFriendlyCode = sectionFriendlyCode.ToLower();
         var formationSection = _readOnlyRepository
             .Table<FormationSection, int>()
             .Where(fm => 
@@ -49,7 +50,7 @@ public class FormationController : Controller
             .BasicIncludes()
             .Single();
 
-        return Ok(formationSection.MapDto());
+        return Ok(formationSection.MapDto(_hashIdTranslator));
     }
 
 }

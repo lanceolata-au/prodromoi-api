@@ -50,4 +50,29 @@ public class FormationTests : TestWithDi
 
     }
 
+    [Test]
+    public void CanGetByFriendly()
+    {
+        FormationOperations.TestFormationAndSectionIsCreated();
+        
+        var formationSection = ReadOnlyRepository
+            .Table<FormationSection, int>()
+            .BasicIncludes()
+            .Single();
+
+        var code = "test";
+
+        var getResult = _formationController.GetByFriendlyName(code);
+
+        getResult.Result.Should().BeOfType<OkObjectResult>();
+        ((OkObjectResult) getResult.Result!).Value.Should().BeOfType<FormationSectionDto>();
+        
+        var dto = (FormationSectionDto)((OkObjectResult) getResult.Result!).Value!;
+        
+        dto.Should().NotBeNull();
+
+        dto.SectionType.Should().Be(SectionType.Scouts);
+        dto.Formation.Name.Should().Be("Test");
+    }
+
 }

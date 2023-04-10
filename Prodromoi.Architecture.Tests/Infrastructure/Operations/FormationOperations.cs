@@ -17,6 +17,7 @@ public class FormationOperations : Operation
         _readWriteRepository.Commit();
 
         var section = FormationSection.Create(formation.Id, SectionType.Scouts);
+        section.SetFriendlyCode("test");
         _readWriteRepository.Create<FormationSection, int>(section);
         _readWriteRepository.Commit();
 

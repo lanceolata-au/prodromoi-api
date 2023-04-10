@@ -40,6 +40,7 @@ public class FormationTests : TestWithDi
         var section = FormationSection.Create(formation.Id, SectionType.Scouts);
         section.SetMeetingDay(DayOfWeek.Thursday);
         section.SetMeetingTime(TimeOnly.Parse("19:00"));
+        section.SetFriendlyCode("TESTCODE");
         ReadWriteRepository.Create<FormationSection, int>(section);
         ReadWriteRepository.Commit();
 
@@ -57,6 +58,8 @@ public class FormationTests : TestWithDi
         result.First().Sections.First().RegularMeetingDay.Should().Be(DayOfWeek.Thursday);
         var testTime = new TimeOnly(19, 0);
         result.First().Sections.First().RegularMeetingTime.Should().Be(testTime);
+        result.First().Sections.First().FriendlyCode.Should().NotBeNull();
+        result.First().Sections.First().FriendlyCode.Should().Be("testcode");
     }
     
 }
