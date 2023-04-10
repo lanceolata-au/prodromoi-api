@@ -26,4 +26,4 @@ select uf.id, v.name
     from unknown_formation uf
     cross join ( values (0) ) as v(name);
 
-alter table section_recorded_attendances add formation_section int4 not null default (1) references formation_sections(id);
+alter table section_recorded_attendances add formation_section_id int4 not null default (1) references formation_sections(id);
