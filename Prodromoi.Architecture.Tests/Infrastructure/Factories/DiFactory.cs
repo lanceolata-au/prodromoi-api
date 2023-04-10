@@ -6,12 +6,14 @@ using Serilog;
 
 namespace Prodromoi.Architecture.Tests.Infrastructure.Factories;
 
-public class PersistenceFactory
+public static class DiFactory
 {
     public static IContainer CreateContainer()
     {
         var builder = new ContainerBuilder();
 
+        builder.RegisterModule<HelpersModule>();
+        
         builder
             .Register(del => {
                 
@@ -25,7 +27,6 @@ public class PersistenceFactory
             .SingleInstance();
         
         builder.RegisterModule<DatabaseStoreModule>();
-
         return builder.Build();
 
     }

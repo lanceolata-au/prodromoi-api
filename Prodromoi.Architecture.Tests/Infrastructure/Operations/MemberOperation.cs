@@ -10,7 +10,7 @@ public class MemberOperation : Operation
     {
     }
 
-    public void ThenTestMemberIsCreated()
+    public void TestMemberIsCreated()
     {
         var dto = new MemberDto()
         {

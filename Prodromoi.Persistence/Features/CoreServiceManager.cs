@@ -11,8 +11,12 @@ public static class CoreServiceManager
         HostBuilderContext hostContext,
         ContainerBuilder builder)
     {
+        
+        builder.RegisterModule<HelpersModule>();
+        
         builder.RegisterModule<PostgreModule>();
         
         builder.RegisterModule<DatabaseStoreModule>();
+        
     }
 }

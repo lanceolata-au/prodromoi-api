@@ -12,4 +12,12 @@ public static class FormationIncludes
             .ThenInclude(mb => mb!.AuditEntries)
             .Include(ra => ra.AuditEntries);
     }
+    
+    public static IQueryable<FormationSection> BasicIncludes(this IQueryable<FormationSection> formationSection)
+    {
+        return formationSection
+            .Include(fm => fm.Formation);
+
+    }
+    
 }

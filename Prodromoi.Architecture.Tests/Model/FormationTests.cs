@@ -19,10 +19,10 @@ public class FormationTests : TestWithDi
     {
         var formation = Formation.Create("Test");
         
-        _readWriteRepository.Create<Formation, int>(formation);
-        _readWriteRepository.Commit();
+        ReadWriteRepository.Create<Formation, int>(formation);
+        ReadWriteRepository.Commit();
 
-        var result = _readOnlyRepository.Table<Formation, int>();
+        var result = ReadOnlyRepository.Table<Formation, int>();
 
         result.Count().Should().Be(1);
         result.First().Name.Should().Be(formation.Name);
@@ -34,15 +34,16 @@ public class FormationTests : TestWithDi
     {
         var formation = Formation.Create("Test");
         
-        _readWriteRepository.Create<Formation, int>(formation);
-        _readWriteRepository.Commit();
+        ReadWriteRepository.Create<Formation, int>(formation);
+        ReadWriteRepository.Commit();
 
         var section = FormationSection.Create(formation.Id, SectionType.Scouts);
         section.SetMeetingDay(DayOfWeek.Thursday);
-        _readWriteRepository.Create<FormationSection, int>(section);
-        _readWriteRepository.Commit();
+        section.SetMeetingTime(TimeOnly.Parse("19:00"));
+        ReadWriteRepository.Create<FormationSection, int>(section);
+        ReadWriteRepository.Commit();
 
-        var result = _readOnlyRepository
+        var result = ReadOnlyRepository
             .Table<Formation, int>()
             .FullIncludes();
 
@@ -54,7 +55,8 @@ public class FormationTests : TestWithDi
         result.First().Sections.Count.Should().Be(1);
         result.First().Sections.First().SectionType.Should().Be(SectionType.Scouts);
         result.First().Sections.First().RegularMeetingDay.Should().Be(DayOfWeek.Thursday);
-
+        var testTime = new TimeOnly(19, 0);
+        result.First().Sections.First().RegularMeetingTime.Should().Be(testTime);
     }
     
 }

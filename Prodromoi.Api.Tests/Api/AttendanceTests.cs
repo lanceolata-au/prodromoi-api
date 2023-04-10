@@ -9,6 +9,8 @@ using Prodromoi.Dto.Attendance;
 using Prodromoi.Dto.Members;
 using Prodromoi.Persistence.Extensions;
 
+#pragma warning disable CS8618
+
 namespace Prodromoi.Api.Tests.Api;
 
 [TestFixture]
@@ -22,8 +24,8 @@ public class AttendanceTests : TestWithDi
     {
         _attendanceController 
             = new AttendanceController(
-            _readOnlyRepository, 
-            _readWriteRepository);
+            ReadOnlyRepository, 
+            ReadWriteRepository);
         
         _attendanceDto.RecordingAdult = new MemberDto()
         {
@@ -38,18 +40,18 @@ public class AttendanceTests : TestWithDi
         _attendanceController.Create(_attendanceDto);
 
         //This would be a part of the controller lifecycle, however we aren't mocking that here.
-        _readWriteRepository.Dispose();
+        ReadWriteRepository.Dispose();
 
         var members
-            = _readOnlyRepository
+            = ReadOnlyRepository
                 .Table<Member, int>()
                 .IncludeAudits();
         var sectionAttendances
-            = _readOnlyRepository
+            = ReadOnlyRepository
                 .Table<SectionRecordedAttendance, int>()
                 .IncludeAudits();
         var recordedAttendances
-            = _readOnlyRepository
+            = ReadOnlyRepository
                 .Table<RecordedAttendance, short>()
                 .FullIncludes();
         
@@ -83,24 +85,24 @@ public class AttendanceTests : TestWithDi
     {
         _attendanceController.Create(_attendanceDto);
         //This would be a part of the controller lifecycle, however we aren't mocking that here.
-        _readWriteRepository.Dispose();
+        ReadWriteRepository.Dispose();
 
         _attendanceController.Create(_attendanceDto);
         //This would be a part of the controller lifecycle, however we aren't mocking that here.
-        _readWriteRepository.Dispose();
+        ReadWriteRepository.Dispose();
 
         var members
-            = _readOnlyRepository
+            = ReadOnlyRepository
                 .Table<Member, int>()
                 .IncludeAudits();
         
         var sectionAttendances
-            = _readOnlyRepository
+            = ReadOnlyRepository
                 .Table<SectionRecordedAttendance, int>()
                 .IncludeAudits();
         
         var recordedAttendances
-            = _readOnlyRepository
+            = ReadOnlyRepository
                 .Table<RecordedAttendance, short>()
                 .FullIncludes();
         

@@ -5,8 +5,8 @@ namespace Prodromoi.Architecture.Tests.Infrastructure.Operations;
 
 public class Operation
 {
-    internal IReadOnlyRepository _readOnlyRepository;
-    internal IReadWriteRepository _readWriteRepository;
+    protected IReadOnlyRepository _readOnlyRepository;
+    protected IReadWriteRepository _readWriteRepository;
 
     public Operation(IContainer container)
     {

@@ -30,8 +30,27 @@ public class FormationSection : AuditEntity
 
     public void SetMeetingDay(DayOfWeek dayOfWeek)
     {
-        Audit(string.Empty, $"Set meeting day to {dayOfWeek.ToString()}");
+        Audit(string.Empty, $"Set regular meeting day to {dayOfWeek.ToString()}");
         RegularMeetingDay = dayOfWeek;
+    }
+
+    public void SetMeetingTime(TimeOnly time)
+    {
+        Audit(string.Empty, $"");
+        RegularMeetingTime = time;
+
+    }
+
+    public FormationSectionDto MapDto()
+    {
+        return new FormationSectionDto()
+        {
+            SectionType = SectionType,
+            Formation = new FormationDto()
+            {
+                Name = Formation!.Name
+            }
+        };
     }
     
 }
