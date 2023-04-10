@@ -1,10 +1,7 @@
-using Autofac;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Prodromoi.Api.Controllers;
 using Prodromoi.Architecture.Tests;
-using Prodromoi.Core.Features;
-using Prodromoi.Core.Interfaces;
 using Prodromoi.DomainModel.Inclusions;
 using Prodromoi.DomainModel.Model.Formations;
 using Prodromoi.Dto.Formations;
@@ -17,16 +14,13 @@ public class FormationTests : TestWithDi
 {
 
     private FormationController _formationController;
-    private IHashIdTranslator _hashIdTranslator;
 
     [SetUp]
     public void LocalSetup()
     {
-        _hashIdTranslator = Container.Resolve<IHashIdTranslator>();
-        
         _formationController 
             = new FormationController(
-                _hashIdTranslator, 
+                HashIdTranslator, 
                 ReadOnlyRepository);
     }
     
@@ -40,7 +34,7 @@ public class FormationTests : TestWithDi
             .BasicIncludes()
             .Single();
 
-        var hashId = _hashIdTranslator.Encode(formationSection.Id);
+        var hashId = HashIdTranslator.Encode(formationSection.Id);
 
         var getResult = _formationController.GetById(hashId);
 

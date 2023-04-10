@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Prodromoi.Core.Extensions;
 using Prodromoi.Core.Interfaces;
+using Prodromoi.DomainModel.Inclusions;
 using Prodromoi.DomainModel.Model.Attendance;
+using Prodromoi.DomainModel.Model.Formations;
 using Prodromoi.DomainModel.Model.Members;
 using Prodromoi.Dto.Attendance;
 using Prodromoi.Dto.Members;
@@ -15,18 +17,32 @@ public class AttendanceController : Controller
 {
     private readonly IReadOnlyRepository _readOnlyRepository;
     private readonly IReadWriteRepository _readWriteRepository;
+    private readonly IHashIdTranslator _hashIdTranslator;
 
     public AttendanceController(
         IReadOnlyRepository readOnlyRepository, 
-        IReadWriteRepository readWriteRepository)
+        IReadWriteRepository readWriteRepository, 
+        IHashIdTranslator hashIdTranslator)
     {
         _readOnlyRepository = readOnlyRepository;
         _readWriteRepository = readWriteRepository;
+        _hashIdTranslator = hashIdTranslator;
     }
 
-    [HttpPost("new")]
-    public ActionResult<QuickAttendanceDto> Create([FromBody]QuickAttendanceDto dto)
+    [HttpPost("{formationSectionHashId}/new")]
+    public ActionResult<QuickAttendanceDto> Create(
+        [FromBody]QuickAttendanceDto dto, 
+        string formationSectionHashId)
     {
+        var formationSectionIds = _hashIdTranslator.Decode(formationSectionHashId);
+        if (formationSectionIds.Length == 0) return NotFound(dto);
+        var formationSectionId = formationSectionIds[0];
+        var formationSectionExists
+            = _readOnlyRepository.Table<FormationSection, int>()
+                .Any(fs => fs.Id == formationSectionId);
+
+        if (!formationSectionExists) return NotFound(dto);
+        
         var adultSearchResult 
             = _readOnlyRepository
             .Table<Member, int>()
@@ -49,7 +65,7 @@ public class AttendanceController : Controller
             _readWriteRepository.Commit();
         }
         
-        var sectionRecordedAttendance = SectionRecordedAttendance.Create(recordingAdult);
+        var sectionRecordedAttendance = SectionRecordedAttendance.Create(recordingAdult, (int)formationSectionId);
         sectionRecordedAttendance.Audit($"{recordingAdult.Name}", "Created from API");
         _readWriteRepository.Create<SectionRecordedAttendance, int>(sectionRecordedAttendance);
         _readWriteRepository.Commit();
@@ -65,8 +81,7 @@ public class AttendanceController : Controller
             var youthSearchResult
                 = _readOnlyRepository
                     .Table<Member, int>()
-                    .Where(m => 
-                        m.PhoneNumber == string.Empty &&
+                    .Where(m =>
                         m.Name.Equals(memberAttendanceDto.Member.Name));
 
             Member recordedYouth;
@@ -90,8 +105,7 @@ public class AttendanceController : Controller
             _readWriteRepository.Create<RecordedAttendance, short>(youthRecordedAttendance);
 
         }
-        
-        
+
         return Ok(dto);
     }
 

@@ -14,6 +14,7 @@ public class TestWithDi
 
     protected IReadOnlyRepository ReadOnlyRepository;
     protected IReadWriteRepository ReadWriteRepository;
+    protected IHashIdTranslator HashIdTranslator;
 
     protected MemberOperation MemberOperation;
     protected FormationOperations FormationOperations;
@@ -24,6 +25,7 @@ public class TestWithDi
         Container = DiFactory.CreateContainer();
         ReadOnlyRepository = Container.Resolve<IReadOnlyRepository>();
         ReadWriteRepository = Container.Resolve<IReadWriteRepository>();
+        HashIdTranslator = Container.Resolve<IHashIdTranslator>();
 
         MemberOperation = new MemberOperation(Container);
         FormationOperations = new FormationOperations(Container);

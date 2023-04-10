@@ -19,25 +19,34 @@ public class AttendanceTests : TestWithDi
     private readonly QuickAttendanceDto _attendanceDto = new QuickAttendanceDto();
     private AttendanceController _attendanceController;
     
+    private string _testFormationId = string.Empty;
+    
     [SetUp]
     public void LocalSetup()
     {
         _attendanceController 
             = new AttendanceController(
             ReadOnlyRepository, 
-            ReadWriteRepository);
+            ReadWriteRepository,
+            HashIdTranslator);
         
         _attendanceDto.RecordingAdult = new MemberDto()
         {
             Name = "Test Adult",
             PhoneNumber = "04 12 345 678"
         };
+        
+        FormationOperations.TestFormationAndSectionIsCreated();
+        _testFormationId = HashIdTranslator.Encode(1);
     }
 
     [Test]
     public void CanCreateAttendanceWithJustAdult()
     {
-        _attendanceController.Create(_attendanceDto);
+        _attendanceController
+            .Create(
+            _attendanceDto, 
+            _testFormationId);
 
         //This would be a part of the controller lifecycle, however we aren't mocking that here.
         ReadWriteRepository.Dispose();
@@ -83,11 +92,11 @@ public class AttendanceTests : TestWithDi
     [Test]
     public void CanCreateSecondAttendanceWithJustAdult()
     {
-        _attendanceController.Create(_attendanceDto);
+        _attendanceController.Create(_attendanceDto, _testFormationId);
         //This would be a part of the controller lifecycle, however we aren't mocking that here.
         ReadWriteRepository.Dispose();
 
-        _attendanceController.Create(_attendanceDto);
+        _attendanceController.Create(_attendanceDto, _testFormationId);
         //This would be a part of the controller lifecycle, however we aren't mocking that here.
         ReadWriteRepository.Dispose();
 
