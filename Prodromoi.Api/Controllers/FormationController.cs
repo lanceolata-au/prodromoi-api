@@ -24,14 +24,28 @@ public class FormationController : Controller
     }
 
     [HttpGet("{sectionId}/id")]
-    public ActionResult<FormationSectionDto> GetById(string hashId)
+    public ActionResult<FormationSectionDto> GetById(string sectionId)
     {
-        var ids = _hashIdTranslator.Decode(hashId);
+        var ids = _hashIdTranslator.Decode(sectionId);
         var id = ids[0];
 
         var formationSection = _readOnlyRepository
             .Table<FormationSection, int>()
             .Where(fm => fm.Id == id)
+            .BasicIncludes()
+            .Single();
+
+        return Ok(formationSection.MapDto());
+    }
+    
+    [HttpGet("{sectionFriendlyCode}/friendlycode")]
+    public ActionResult<FormationSectionDto> GetByFriendlyName(string sectionFriendlyCode)
+    {
+        var formationSection = _readOnlyRepository
+            .Table<FormationSection, int>()
+            .Where(fm => 
+                        fm.FriendlyCode != null && 
+                        fm.FriendlyCode.Equals(sectionFriendlyCode))
             .BasicIncludes()
             .Single();
 
