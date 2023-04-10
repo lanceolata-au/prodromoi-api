@@ -10,13 +10,13 @@ public class AuditTests : TestWithDi
     [Test]
     public void CanCreateMemberWithAudit()
     {
-        _memberOperation.ThenTestMemberIsCreated();
+        MemberOperation.TestMemberIsCreated();
 
-        var members = _readOnlyRepository
+        var members = ReadOnlyRepository
             .Table<Member, int>()
             .IncludeAudits();
 
-        var audits = _readOnlyRepository
+        var audits = ReadOnlyRepository
             .Table<AuditEntry, long>();
         
         members.Count().Should().Be(1);

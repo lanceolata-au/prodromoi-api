@@ -39,4 +39,28 @@ public class HashIdTranslator : IHashIdTranslator
 
         return Encode(nonNullNumbers.ToArray());
     }
+
+    public string Encode(long number)
+    {
+        return Encode(new long[]{number});
+    }
+    
+    public bool IsHashId(string possibleHashId)
+    {
+
+        try
+        {
+            var result = _hashids.DecodeLong(possibleHashId);
+
+            if (result.Length < 3) return false;
+
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    
 }

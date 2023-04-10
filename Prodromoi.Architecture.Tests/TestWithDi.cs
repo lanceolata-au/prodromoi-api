@@ -3,29 +3,32 @@ using Prodromoi.Architecture.Tests.Infrastructure.Factories;
 using Prodromoi.Architecture.Tests.Infrastructure.Operations;
 using Prodromoi.Core.Interfaces;
 
+#pragma warning disable CS8618
+
 namespace Prodromoi.Architecture.Tests;
 
 public class TestWithDi
 {
-#pragma warning disable CS8618
-    
-    private IContainer _container;
 
-    public IReadOnlyRepository _readOnlyRepository;
-    public IReadWriteRepository _readWriteRepository;
+    protected IContainer Container;
 
-    internal MemberOperation _memberOperation;
-    
-#pragma warning restore CS8618
-    
+    protected IReadOnlyRepository ReadOnlyRepository;
+    protected IReadWriteRepository ReadWriteRepository;
+    protected IHashIdTranslator HashIdTranslator;
+
+    protected MemberOperation MemberOperation;
+    protected FormationOperations FormationOperations;
+
     [SetUp]
     public void Setup()
     {
-        _container = PersistenceFactory.CreateContainer();
-        _readOnlyRepository = _container.Resolve<IReadOnlyRepository>();
-        _readWriteRepository = _container.Resolve<IReadWriteRepository>();
+        Container = DiFactory.CreateContainer();
+        ReadOnlyRepository = Container.Resolve<IReadOnlyRepository>();
+        ReadWriteRepository = Container.Resolve<IReadWriteRepository>();
+        HashIdTranslator = Container.Resolve<IHashIdTranslator>();
 
-        _memberOperation = new MemberOperation(_container);
+        MemberOperation = new MemberOperation(Container);
+        FormationOperations = new FormationOperations(Container);
 
     }
 }

@@ -6,5 +6,6 @@ public interface IHashIdTranslator
 
     public string Encode(long[] numbers);
     public string Encode(long?[] numbers);
-    
+    public string Encode(long number);
+
 }
