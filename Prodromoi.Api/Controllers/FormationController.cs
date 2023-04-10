@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Prodromoi.Core.Features;
 using Prodromoi.Core.Interfaces;
 using Prodromoi.DomainModel.Inclusions;
 using Prodromoi.DomainModel.Model.Formations;
