@@ -12,9 +12,7 @@ Test Api:
   stage: Test
   image: mcr.microsoft.com/dotnet/sdk:6.0
   script:
-    - dotnet test ./Prodromoi.Api.Tests/Prodromoi.Api.Tests.csproj 
-    --test-adapter-path:. 
-    --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+    - dotnet test ./Prodromoi.Api.Tests/Prodromoi.Api.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
     when: always
     paths:
@@ -27,9 +25,7 @@ Test Architecture:
   stage: Test
   image: mcr.microsoft.com/dotnet/sdk:6.0
   script:
-    - dotnet test ./Prodromoi.Architecture.Tests/Prodromoi.Architecture.Tests.csproj 
-    --test-adapter-path:. 
-    --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+    - dotnet test ./Prodromoi.Architecture.Tests/Prodromoi.Architecture.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
     when: always
     paths:
@@ -60,26 +56,9 @@ Build API:
     - echo "$GitVersion_SemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create 
-    --name multiarch.$CI_PIPELINE_IID.api 
-    --driver docker-container  
-    --config ./ci/config.toml
-    - docker buildx build 
-    --provenance false 
-    --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api 
-    --platform linux/amd64,linux/arm64 
-    --push 
-    --cache-to type=local,dest=~/images/ 
-    --cache-from type=local,src=~/images/ 
-    -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
-    - docker buildx build 
-    --provenance false 
-    --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api 
-    --platform linux/amd64,linux/arm64 
-    --push 
-    --cache-to type=local,dest=~/images/ 
-    --cache-from type=local,src=~/images/ 
-    -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$GitVersion_SemVer .
+    - docker buildx create --name multiarch.$CI_PIPELINE_IID.api --driver docker-container  --config ./ci/config.toml
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=~/images/ --cache-from type=local,src=~/images/ -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=~/images/ --cache-from type=local,src=~/images/ -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.api 
   only:
@@ -97,26 +76,9 @@ Build DbManager:
     - echo "$GitVersion_SemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create 
-    --name multiarch.$CI_PIPELINE_IID.dbmanager 
-    --driver docker-container 
-    --config ./ci/config.toml
-    - docker buildx build 
-    --provenance false 
-    --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager 
-    --platform linux/amd64,linux/arm64 
-    --push 
-    --cache-to type=local,dest=~/images/ 
-    --cache-from type=local,src=~/images/ 
-    -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
-    - docker buildx build 
-    --provenance false 
-    --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager 
-    --platform linux/amd64,linux/arm64 
-    --push 
-    --cache-to type=local,dest=~/images/ 
-    --cache-from type=local,src=~/images/ 
-    -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$GitVersion_SemVer .
+    - docker buildx create --name multiarch.$CI_PIPELINE_IID.dbmanager --driver docker-container --config ./ci/config.toml
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=~/images/ --cache-from type=local,src=~/images/ -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=~/images/ --cache-from type=local,src=~/images/ -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.dbmanager 
   only:
@@ -134,26 +96,9 @@ Build Service:
     - echo "$GitVersion_SemVer"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker buildx create 
-    --name multiarch.$CI_PIPELINE_IID.service 
-    --driver docker-container  
-    --config ./ci/config.toml
-    - docker buildx build 
-    --provenance false 
-    --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service 
-    --platform linux/amd64,linux/arm64 
-    --push 
-    --cache-to type=local,dest=~/images/ 
-    --cache-from type=local,src=~/images/ 
-    -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build 
-    --provenance false 
-    --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service 
-    --platform linux/amd64,linux/arm64 
-    --push 
-    --cache-to type=local,dest=~/images/ 
-    --cache-from type=local,src=~/images/ 
-    -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_SemVer .
+    - docker buildx create --name multiarch.$CI_PIPELINE_IID.service --driver docker-container  --config ./ci/config.toml
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=~/images/ --cache-from type=local,src=~/images/ -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=~/images/ --cache-from type=local,src=~/images/ -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.service 
   only:
@@ -212,8 +157,7 @@ Clean:
     - Build DbManager
     - Build Service
   script:
-    docker system prune -a 
-    --force
+    docker system prune -a --force
   only:
     - develop
     - /^release.*$/
