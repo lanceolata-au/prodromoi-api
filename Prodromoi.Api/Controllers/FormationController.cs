@@ -29,6 +29,13 @@ public class FormationController : Controller
         var ids = _hashIdTranslator.Decode(sectionId);
         var id = ids[0];
 
+        if (!_readOnlyRepository
+                .Table<FormationSection, int>()
+                .Any(fs => fs.FriendlyCode != null && fs.Id == id))
+        {
+            return NotFound();
+        }
+        
         var formationSection = _readOnlyRepository
             .Table<FormationSection, int>()
             .Where(fm => fm.Id == id)
@@ -42,6 +49,14 @@ public class FormationController : Controller
     public ActionResult<FormationSectionDto> GetByFriendlyName(string sectionFriendlyCode)
     {
         sectionFriendlyCode = sectionFriendlyCode.ToLower();
+
+        if (!_readOnlyRepository
+            .Table<FormationSection, int>()
+            .Any(fs => fs.FriendlyCode != null && fs.FriendlyCode.Equals(sectionFriendlyCode)))
+        {
+            return NotFound();
+        }
+        
         var formationSection = _readOnlyRepository
             .Table<FormationSection, int>()
             .Where(fm => 
