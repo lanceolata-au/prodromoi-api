@@ -57,8 +57,8 @@ Build API:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.$CI_PIPELINE_IID.api --driver docker-container  --config ./ci/config.toml
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$GitVersion_SemVer .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/api:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.api -f Dockerfile.Api --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/api:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.api 
   only:
@@ -77,8 +77,8 @@ Build DbManager:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.$CI_PIPELINE_IID.dbmanager --driver docker-container --config ./ci/config.toml
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$GitVersion_SemVer .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.dbmanager -f Dockerfile.DbManager --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/dbmanager:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.dbmanager 
   only:
@@ -97,8 +97,8 @@ Build Service:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.$CI_PIPELINE_IID.service --driver docker-container  --config ./ci/config.toml
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_SemVer .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.service 
   only:
