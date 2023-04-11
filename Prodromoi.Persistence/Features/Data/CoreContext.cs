@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Prodromoi.Core.Features;
 using Prodromoi.DomainModel.Model;
 using Prodromoi.DomainModel.Model.Attendance;
+using Prodromoi.DomainModel.Model.Formations;
 using Prodromoi.DomainModel.Model.Members;
 
 namespace Prodromoi.Persistence.Features.Data;
@@ -22,6 +23,7 @@ public class CoreContext : ProdromoiBaseDbContext
             .Entity<Actor>()
             .AddAuditRelationship();
         BuildAttendanceModel(modelBuilder);
+        BuildFormationModel(modelBuilder);
         
         base.OnModelCreating(modelBuilder);
     }
@@ -56,6 +58,25 @@ public class CoreContext : ProdromoiBaseDbContext
     
     #endregion
 
+    #region formations
+
+    public DbSet<Formation> Formations { get; set; }
+    public DbSet<FormationSection> FormationSections { get; set; }
+
+    private static void BuildFormationModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<Formation>()
+            .AddAuditRelationship();
+        
+        modelBuilder
+            .Entity<FormationSection>()
+            .AddAuditRelationship();
+        
+    }
+
+    #endregion
+    
     #region audit_entry_management
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,

@@ -19,7 +19,8 @@
         "DB_HOST": "192.168.2.20",
         "DB_PASS": "@!#D3F8ltP3ssw@rd",
         "DB_PORT": 31433,
-        "DB_USER": "postgres"
+        "DB_USER": "postgres",
+        "HASH_ID_KEY": "TEMP_KEY"
 
       }
     },
@@ -34,7 +35,8 @@
         "DB_HOST": "192.168.2.20",
         "DB_PASS": "@!#D3F8ltP3ssw@rd",
         "DB_PORT": 31433,
-        "DB_USER": "postgres"
+        "DB_USER": "postgres",
+        "HASH_ID_KEY": "TEMP_KEY"
       }
     }
   }
