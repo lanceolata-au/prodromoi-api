@@ -23,6 +23,7 @@ public class CoreContext : ProdromoiBaseDbContext
             .Entity<Actor>()
             .AddAuditRelationship();
         BuildAttendanceModel(modelBuilder);
+        BuildFormationModel(modelBuilder);
         
         base.OnModelCreating(modelBuilder);
     }

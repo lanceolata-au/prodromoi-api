@@ -1,8 +1,11 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Prodromoi.Api;
+using Prodromoi.Core.Features;
 using Prodromoi.Persistence.Features;
 using Serilog;
+
+LicenceInfo.OutputLicense();
 
 var builder = WebApplication
     .CreateBuilder(args);
