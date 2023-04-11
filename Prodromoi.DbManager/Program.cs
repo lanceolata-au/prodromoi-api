@@ -3,6 +3,8 @@ using Prodromoi.DbManager;
 using Prodromoi.DbManager.Features;
 using Serilog;
 
+LicenceInfo.OutputLicense();
+
 Log.Logger = Logging.CreateLogger();
 
 Host.CreateDefaultBuilder(args)
