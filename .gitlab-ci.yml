@@ -171,7 +171,8 @@ Sync Argo Develop:
     - git config --global user.email "admin@lanceolata.com.au"
     - git add ./app/api.yaml
     - git commit -m "Upgrade to $GitVersion_SemVer for API & DB"
-    - git -c http.sslVerify=false push origin develop
+    - cat ./app/apy.yaml
+    #- git -c http.sslVerify=false push origin develop
   only:
     - /^release.*$/
     - /^hotfix.*$/
