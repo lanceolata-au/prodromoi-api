@@ -36,6 +36,10 @@ public class AttendanceController : Controller
     {
         var formationSectionIds = _hashIdTranslator.Decode(formationSectionHashId);
         if (formationSectionIds.Length == 0) return NotFound(dto);
+        if (dto.Attendances.Any(at => at is { Present: true, Member.Name.Length: < 1 }))
+        {
+            return BadRequest(dto);
+        }
         var formationSectionId = formationSectionIds[0];
         var formationSectionExists
             = _readOnlyRepository.Table<FormationSection, int>()
