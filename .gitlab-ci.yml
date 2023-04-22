@@ -175,7 +175,6 @@ Sync Argo Develop:
   only:
     - /^release.*$/
     - /^hotfix.*$/
-    - develop
     - main
 
 Clean:
