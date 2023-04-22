@@ -161,6 +161,7 @@ Sync Argo Develop:
     - mkdir /git
     - cd /git
     - git -c http.sslVerify=false clone https://token:$ARGO_GIT_ACCESS@vulcan.samon.lata/scouts-tasmania/prodromoi/prodromoi-argocd.git
+    - cd ./prodromoi-argocd/
     - git checkout develop
     - git -c http.sslVerify=false pull origin develop
   script:
