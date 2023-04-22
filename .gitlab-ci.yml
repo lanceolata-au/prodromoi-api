@@ -165,14 +165,13 @@ Sync Argo Develop:
     - git checkout develop
     - git -c http.sslVerify=false pull origin develop
   script:
-    - sed -i "s|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/dbmanager:1.2.0-beta.6|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/dbmanager:$GitVersion_SemVer|g" ./app/api.yaml
-    - sed -i "s|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/api:1.2.0-beta.6|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/api:$GitVersion_SemVer|g" ./app/api.yaml
+    - sed -i "s|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/dbmanager:.*|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/dbmanager:$GitVersion_SemVer|g" ./app/api.yaml
+    - sed -i "s|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/api:.*|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/api:$GitVersion_SemVer|g" ./app/api.yaml
     - git config --global user.name "CI/CD"
     - git config --global user.email "admin@lanceolata.com.au"
     - git add ./app/api.yaml
     - git commit -m "Upgrade to $GitVersion_SemVer for API & DB"
-    - cat ./app/apy.yaml
-    #- git -c http.sslVerify=false push origin develop
+    - git -c http.sslVerify=false push origin develop
   only:
     - /^release.*$/
     - /^hotfix.*$/
