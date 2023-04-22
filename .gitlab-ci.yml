@@ -149,6 +149,34 @@ Release:
   only:
     - main
 
+Sync Argo Develop:
+  stage: Release
+  image: bitnami/git:latest
+  needs:
+    - GitVersion
+    - Build API
+    - Build DbManager
+    - Build Service
+  before_script:
+    - mkdir /git
+    - cd /git
+    - git -c http.sslVerify=false clone https://token:$ARGO_GIT_ACCESS@vulcan.samon.lata/scouts-tasmania/prodromoi/prodromoi-argocd.git
+    - cd ./prodromoi-argocd/
+    - git checkout develop
+    - git -c http.sslVerify=false pull origin develop
+  script:
+    - sed -i "s|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/dbmanager:.*|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/dbmanager:$GitVersion_SemVer|g" ./app/api.yaml
+    - sed -i "s|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/api:.*|conreg.samon.lata/scouts-tasmania/prodromoi/prodromoi-api/api:$GitVersion_SemVer|g" ./app/api.yaml
+    - git config --global user.name "CI/CD"
+    - git config --global user.email "admin@lanceolata.com.au"
+    - git add ./app/api.yaml
+    - git commit -m "Upgrade to $GitVersion_SemVer for API & DB"
+    - git -c http.sslVerify=false push origin develop
+  only:
+    - /^release.*$/
+    - /^hotfix.*$/
+    - main
+
 Clean:
   stage: Clean
   timeout: 30m
