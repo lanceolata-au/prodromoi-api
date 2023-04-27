@@ -8,6 +8,19 @@ stages:
 include:
   - local: '/ci/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
 
+Test Service:
+  stage: Test
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  script:
+    - dotnet test ./Prodromoi.Service.Tests/Prodromoi.Service.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  artifacts:
+    when: always
+    paths:
+      - ./**/*test-result.xml
+    reports:
+      junit:
+        - ./**/*test-result.xml
+
 Test Api:
   stage: Test
   image: mcr.microsoft.com/dotnet/sdk:6.0
@@ -34,10 +47,10 @@ Test Architecture:
       junit:
         - ./**/*test-result.xml
 
-
 GitVersion:
   stage: Revise
   needs: 
+    - Test Service
     - Test Api
     - Test Architecture
   extends: .gitversion_function
