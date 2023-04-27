@@ -37,15 +37,27 @@ public static class StringExtensions
         var standardInput = process.StandardInput;
         var standardOutput = process.StandardOutput;
 
-        var inputWriter = new StreamWriter(standardInput.BaseStream, Encoding.UTF8);
+        var inputWriter = new StreamWriter(standardInput.BaseStream, Encoding.ASCII);
         inputWriter.AutoFlush = true;
         inputWriter.Write(html);
         inputWriter.Dispose();
         
-        var stringOutput = standardOutput.ReadToEnd();
-
+        var bytes = ReadFully(standardOutput.BaseStream);
         process.WaitForExit(10000);
-        return Encoding.ASCII.GetBytes(stringOutput);
+        
+        return bytes;
+    }
+
+    private static IEnumerable<byte> ReadFully(Stream input)
+    {
+        var buffer = new byte[16*1024];
+        using MemoryStream ms = new MemoryStream();
+        int read;
+        while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            ms.Write(buffer, 0, read);
+        }
+        return ms.ToArray();
     }
     
 }
