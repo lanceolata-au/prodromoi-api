@@ -6,6 +6,7 @@ namespace Prodromoi.Service.Tests.Service;
 public class ReportTests : TestWithDi
 {
     [Test]
+    [Ignore("Needs htmlhtmltopdf installed")]
     public void CanGetHtmlToPdfBytes()
     {
         var htmlReport = File.ReadAllText("./Service/HtmlExamples/TestReport.html");
