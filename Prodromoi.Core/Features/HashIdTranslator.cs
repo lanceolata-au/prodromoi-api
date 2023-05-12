@@ -1,5 +1,6 @@
 using HashidsNet;
 using Prodromoi.Core.Interfaces;
+using Serilog;
 
 namespace Prodromoi.Core.Features;
 
@@ -57,6 +58,10 @@ public class HashIdTranslator : IHashIdTranslator
         }
         catch (Exception e)
         {
+            Log.Error(
+                "Could not decode hash id {Message} \n\n {StackTrace}", 
+                e.Message, 
+                e.StackTrace);
             return false;
         }
 

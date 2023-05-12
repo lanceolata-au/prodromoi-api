@@ -3,7 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Prodromoi.Core.Features;
 using Prodromoi.Persistence.Features;
-using Prodromoi.Service;
+using Prodromoi.Scheduler;
 using Serilog;
 
 LicenceInfo.OutputLicense();

@@ -8,6 +8,22 @@ stages:
 include:
   - local: '/ci/gitversion-ci-cd-plugin-extension.gitlab-ci.yml' 
 
+Test Service:
+  stage: Test
+  image: alpine:latest
+  before_script:
+    - apk add dotnet6-sdk
+    - apk add weasyprint
+  script:
+    - dotnet test ./Prodromoi.Scheduler.Tests/Prodromoi.Scheduler.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  artifacts:
+    when: always
+    paths:
+      - ./**/*test-result.xml
+    reports:
+      junit:
+        - ./**/*test-result.xml
+
 Test Api:
   stage: Test
   image: mcr.microsoft.com/dotnet/sdk:6.0
@@ -34,10 +50,10 @@ Test Architecture:
       junit:
         - ./**/*test-result.xml
 
-
 GitVersion:
   stage: Revise
   needs: 
+    - Test Service
     - Test Api
     - Test Architecture
   extends: .gitversion_function
@@ -97,8 +113,8 @@ Build Service:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker buildx create --name multiarch.$CI_PIPELINE_IID.service --driver docker-container  --config ./ci/config.toml
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
-    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Service --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_SemVer .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Scheduler --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:latest .
+    - docker buildx build --provenance false --builder multiarch.$CI_PIPELINE_IID.service -f Dockerfile.Scheduler --platform linux/amd64,linux/arm64 --push --cache-to type=local,dest=/var/image_cache,mode=max --cache-from type=local,src=/var/image_cache -t $CI_REGISTRY/$CI_PROJECT_PATH/service:$GitVersion_SemVer .
   after_script:
     - docker buildx rm multiarch.$CI_PIPELINE_IID.service 
   only:

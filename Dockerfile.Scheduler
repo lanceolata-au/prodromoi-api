@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+
+WORKDIR /App
+
+COPY . ./
+
+RUN ["dotnet", "restore", "./Prodromoi.Scheduler/Prodromoi.Scheduler.csproj"]
+RUN ["dotnet", "publish", "./Prodromoi.Scheduler/Prodromoi.Scheduler.csproj", "-c", "Release", "-o", "out"]
+
+
+FROM alpine:latest as runtime
+
+RUN ["apk", "add", "dotnet6-runtime"]
+RUN ["apk", "add", "weasyprint"]
+
+
+WORKDIR /App
+
+COPY --from=build-env /App/out .
+EXPOSE 80
+ENTRYPOINT ["dotnet", "Prodromoi.Scheduler.dll"]
