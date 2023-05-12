@@ -10,7 +10,9 @@ include:
 
 Test Service:
   stage: Test
-  image: mcr.microsoft.com/dotnet/sdk:6.0
+  image: alpine:latest
+  before_script:
+    - apk add dotnet6-sdk
   script:
     - dotnet test ./Prodromoi.Service.Tests/Prodromoi.Service.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
