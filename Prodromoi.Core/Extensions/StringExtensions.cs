@@ -16,11 +16,11 @@ public static class StringExtensions
     // ("I need a wrapper for wkhtmltopdf that will output to a bytestream in C#")
     public static IEnumerable<byte> ConvertHtmlToPdf(this string html, string arguments = "")
     {
-        const string defaultArguments = "-q -n --page-size A4 ";
+        const string defaultArguments = "-q --full-fonts";
         const string argumentFinalizer = " - -";
         var startInfo = new ProcessStartInfo
         {
-            FileName = "wkhtmltopdf",
+            FileName = "weasyprint",
             Arguments = defaultArguments + arguments + argumentFinalizer,
             UseShellExecute = false,
             RedirectStandardInput = true,

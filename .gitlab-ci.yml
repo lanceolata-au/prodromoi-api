@@ -13,6 +13,7 @@ Test Service:
   image: alpine:latest
   before_script:
     - apk add dotnet6-sdk
+    - apk add weasyprint
   script:
     - dotnet test ./Prodromoi.Service.Tests/Prodromoi.Service.Tests.csproj --test-adapter-path:. --logger:"junit;LogFilePath=..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:

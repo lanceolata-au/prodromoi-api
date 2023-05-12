@@ -11,6 +11,8 @@ RUN ["dotnet", "publish", "./Prodromoi.Service/Prodromoi.Service.csproj", "-c", 
 FROM alpine:latest as runtime
 
 RUN ["apk", "add", "dotnet6-runtime"]
+RUN ["apk", "add", "weasyprint"]
+
 
 WORKDIR /App
 

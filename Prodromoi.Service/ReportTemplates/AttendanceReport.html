@@ -14,24 +14,31 @@
         html {
             font-family: 'Raleway', sans-serif;
         }
+
         @page {
             size: A4;
-        }
-        @page :left {
+            margin-top: 0.1cm;
             margin-left: 0.8cm;
+            margin-right: 0.8cm;
         }
-        @page :right {
-            margin-left: 0.8cm;
+
+        @media print {
+            div.page-break {
+                page-break-after: always;
+            }
         }
-        
-        div.page-break {
-            width: 100%;
-            border-top: 2px ridge;
-            page-break-before: always;
+
+        @media screen {
+            div.page-break {
+                width: 100%;
+                margin-top: 10px;
+                border-top: 2px ridge;
+                margin-bottom: 10px;
+            }
         }
-        
+
         h1, h3 {
-            
+
         }
         table, th, th {
             border: 1px solid;
@@ -67,57 +74,57 @@
 </head>
 <body>
 
-    <div class="center">
-        <h1 style="padding-top: 20px;  font-size: 42px">Scouts Tasmania</h1>
-        <p style="padding-top: 20px; font-size: 20px">
-            This document contains sensitive Personally Idenfiable Information and remains property of
-            Scouts Australia Tasmania Branch (ABN: 88 436 518 233).
-        </p>
-    </div>
+<div class="center">
+    <h1 style="padding-top: 20px;  font-size: 42px">Scouts Tasmania</h1>
+    <p style="padding-top: 20px; font-size: 20px">
+        This document contains sensitive Personally Idenfiable Information and remains property of
+        Scouts Australia Tasmania Branch (ABN: 88 436 518 233).
+    </p>
+</div>
 
-    <div class="page-break"></div>
+<div class="page-break"></div>
 
-    <h3>Attendances</h3>
+<h3>Attendances</h3>
 
-    <table class="styled-table">
-        <thead>
-        <tr>
-            <th>Name</th><th>Phone No</th><th>Check In Time</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-            <tr>
-                <td>Test</td><td>TEst</td><td>TEst</td>
-            </tr>
-        </tbody>
-    </table>
+<table class="styled-table">
+    <thead>
+    <tr>
+        <th>Name</th><th>Phone No</th><th>Check In Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    <tr>
+        <td>Test</td><td>TEst</td><td>TEst</td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
