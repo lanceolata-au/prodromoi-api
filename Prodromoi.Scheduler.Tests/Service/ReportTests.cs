@@ -1,14 +1,14 @@
 using Prodromoi.Architecture.Tests;
 using Prodromoi.Core.Extensions;
 
-namespace Prodromoi.Service.Tests.Service;
+namespace Prodromoi.Scheduler.Tests.Service;
 
 public class ReportTests : TestWithDi
 {
     [Test]
     public void CanGetHtmlToPdfBytes()
     {
-        var htmlReport = File.ReadAllText("./Service/HtmlExamples/TestReport.html");
+        var htmlReport = File.ReadAllText("./ReportTemplates/AttendanceReport.html");
 
         var pdfBytes = htmlReport.ConvertHtmlToPdf();
         

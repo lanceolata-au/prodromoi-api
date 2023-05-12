@@ -16,4 +16,10 @@
       <ProjectReference Include="..\Prodromoi.Persistence\Prodromoi.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="ReportTemplates\AttendanceReport.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

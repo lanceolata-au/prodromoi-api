@@ -20,12 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Prodromoi.Architecture.Tests\Prodromoi.Architecture.Tests.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Service\HtmlExamples\TestReport.html">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <ProjectReference Include="..\Prodromoi.Scheduler\Prodromoi.Scheduler.csproj" />
     </ItemGroup>
 
 </Project>
