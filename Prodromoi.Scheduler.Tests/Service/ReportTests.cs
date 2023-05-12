@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Prodromoi.Architecture.Tests;
 using Prodromoi.Core.Extensions;
 
@@ -6,13 +7,18 @@ namespace Prodromoi.Scheduler.Tests.Service;
 public class ReportTests : TestWithDi
 {
     [Test]
-    public void CanGetHtmlToPdfBytes()
+    public void CanGetAttendanceReportToPdfBytes()
     {
-        var htmlReport = File.ReadAllText("./ReportTemplates/AttendanceReport.html");
+        var operation = () =>
+        {
+            var htmlReport = File.ReadAllText("./ReportTemplates/AttendanceReport.html");
 
-        var pdfBytes = htmlReport.ConvertHtmlToPdf();
+            var pdfBytes = htmlReport.ConvertHtmlToPdf();
         
-        File.WriteAllBytes("./TestReport.pdf", pdfBytes.ToArray());
+            File.WriteAllBytes("./TestReport.pdf", pdfBytes.ToArray());
+        };
+
+        operation.Should().NotThrow();
 
     }
 }
