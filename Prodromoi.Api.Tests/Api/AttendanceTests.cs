@@ -13,7 +13,6 @@ using Prodromoi.Persistence.Extensions;
 
 namespace Prodromoi.Api.Tests.Api;
 
-[TestFixture]
 public class AttendanceTests : TestWithDi
 {
     private readonly QuickAttendanceDto _attendanceDto = new QuickAttendanceDto();

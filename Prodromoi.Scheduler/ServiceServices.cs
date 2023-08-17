@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace Prodromoi.Service;
+namespace Prodromoi.Scheduler;
 
 public static class ServiceServices
 {
